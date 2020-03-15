@@ -37,6 +37,10 @@ jucer_project_files("MasterEars/Source"
 # Compile   Xcode     Binary    File
 #           Resource  Resource
   x         .         .         "Source/main.cpp"
+  .         .         .         "Source/MainComponent.h"
+  x         .         .         "Source/MainComponent.cpp"
+  .         .         .         "Source/SetupComponent.h"
+  x         .         .         "Source/SetupComponent.cpp"
 )
 
 jucer_project_module(

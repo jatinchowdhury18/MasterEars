@@ -1,22 +1,5 @@
 #include "JuceHeader.h"
-
-class MainComponent : public Component
-{
-public:
-    MainComponent()
-    {
-        setSize (100, 100);
-    }
-
-    void resized() override {}
-    void paint(Graphics& g) override
-    {
-        g.fillAll (Colours::red);
-    }
-
-private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
-};
+#include "MainComponent.h"
 
 class MasterEarsApplication : public JUCEApplication
 {
