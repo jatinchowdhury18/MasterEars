@@ -5,12 +5,19 @@ MainComponent::MainComponent()
     setSize (500, 500);
 
     addAndMakeVisible (setupComponent);
+    // addChildComponent (setupComponent);
     setupComponent.addListener (this);
+
+    // addAndMakeVisible (sessComponent);
 }
 
 void MainComponent::resized()
 {
-    setupComponent.setBounds (0, 30, getWidth(), 450);
+    Rectangle<int> bounds (0, 30, getWidth(), 450);
+    setupComponent.setBounds (bounds);
+    
+    if (sessComponent.get() != nullptr)
+        sessComponent->setBounds (bounds);
 
     repaint();
 }
@@ -28,5 +35,9 @@ void MainComponent::paint(Graphics& g)
 void MainComponent::setupComplete (File* file)
 {
     setupComponent.setVisible (false);
+    
+    sessComponent = std::make_unique<SessionComponent> (*file);
+    addAndMakeVisible (sessComponent.get());
+    resized();
 }
 

@@ -1,5 +1,8 @@
-#include "JuceHeader.h"
+#ifndef MAINCOMPONENT_H_INCLUDED
+#define MAINCOMPONENT_H_INCLUDED
+
 #include "SetupComponent.h"
+#include "SessionGUI/SessionComponent.h"
 
 class MainComponent : public Component,
                       private SetupComponent::Listener
@@ -14,7 +17,10 @@ public:
 
 private:
     SetupComponent setupComponent;
-    
+    std::unique_ptr<SessionComponent> sessComponent;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };
+
+#endif // MAINCOMPONENT_H_INCLUDED
 
