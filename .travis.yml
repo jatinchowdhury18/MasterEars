@@ -1,0 +1,50 @@
+notifications:
+  email: false
+
+language: cpp
+
+# if pull request: always build
+# if push: only build for master branch
+if: (type != push) OR (type = push AND branch = travis)
+
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          packages:
+            - libasound2-dev
+            - libxcursor-dev
+            - libxinerama-dev
+            - libxrandr-dev
+            - webkit2gtk-4.0
+      env: GENERATOR="Unix Makefiles"
+    
+    - os: osx
+      env: GENERATOR=Xcode
+      osx_image: xcode9.4
+
+    - os: windows
+      env: GENERATOR="Visual Studio 2017"
+
+install:
+  - cmake --version
+
+  - git clone --branch=5.4.7 --depth=1 --single-branch
+    -- https://github.com/jatinchowdhury18/JUCE.git ../JUCE
+
+  - git clone https://github.com/McMartin/FRUT.git ../FRUT
+
+  # configure and install FRUT
+  - cd ../FRUT/
+  - mkdir build && cd build/
+  - cmake .. -DCMAKE_INSTALL_PREFIX=../prefix -DJUCE_ROOT=../../JUCE
+  - cmake --build . --target install
+
+script:
+  - cd $TRAVIS_BUILD_DIR
+  - mkdir build && cd build/
+  - cmake .. -G $GENERATOR
+  - cmake --build .
+
