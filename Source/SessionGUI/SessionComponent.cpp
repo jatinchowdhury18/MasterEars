@@ -8,7 +8,7 @@ SessionComponent::SessionComponent (File& file) :
 
 void SessionComponent::resized()
 {
-    waveform.setBounds (20, 0, getWidth() - 40, 50);
+    waveform.setBounds (10, 15, getWidth() - 20, 50);
 }
 
 void SessionComponent::paint (Graphics& g)
