@@ -29,6 +29,7 @@ matrix:
       env: GENERATOR="Visual Studio 2017"
 
 install:
+  - echo ${GENERATOR}
   - cmake --version
 
   - git clone --branch=5.4.7 --depth=1 --single-branch
@@ -45,6 +46,6 @@ install:
 script:
   - cd $TRAVIS_BUILD_DIR
   - mkdir build && cd build/
-  - cmake .. -G $GENERATOR
+  - cmake .. -G ${GENERATOR}
   - cmake --build .
 
