@@ -29,6 +29,9 @@ private:
     TextButton nextButton { "Next" };
 
     Label fileLabel;
+    
+    ComboBox eqTypeBox;
+    ComboBox eqAmtBox;
 
     std::unique_ptr<File> file;
 

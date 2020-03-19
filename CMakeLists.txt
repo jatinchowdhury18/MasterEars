@@ -45,6 +45,7 @@ jucer_project_files("MasterEars/Source"
   x         .         .         "Source/SessionGUI/SessionComponent.cpp"
   .         .         .         "Source/SessionGUI/WaveformViewer.h"
   x         .         .         "Source/SessionGUI/WaveformViewer.cpp"
+  .         .         .         "Source/Logic/Configuration.h"
 )
 
 jucer_project_module(

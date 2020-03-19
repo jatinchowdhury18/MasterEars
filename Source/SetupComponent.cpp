@@ -1,4 +1,5 @@
 #include "SetupComponent.h"
+#include "Logic/Configuration.h"
 
 SetupComponent::SetupComponent()
 {
@@ -23,13 +24,25 @@ SetupComponent::SetupComponent()
         }
         else
         {
+            Configuration config (*file.get(),
+                static_cast<EQType> (eqTypeBox.getSelectedItemIndex()),
+                static_cast<EQAmt> (eqAmtBox.getSelectedItemIndex()));            
+
             listeners.call (&Listener::setupComplete, file.release());
         }       
     };
 
     addAndMakeVisible (fileLabel);
     fileLabel.setText ("[No File]", dontSendNotification);
-    fileLabel.setJustificationType (Justification::centred);
+    fileLabel.setJustificationType (Justification::right);
+
+    addAndMakeVisible (eqTypeBox);
+    eqTypeBox.addItemList (Configuration::getTypeChoices(), 1);
+    eqTypeBox.setSelectedItemIndex (0, dontSendNotification);
+
+    addAndMakeVisible (eqAmtBox);
+    eqAmtBox.addItemList (Configuration::getAmtChoices(), 1);
+    eqAmtBox.setSelectedItemIndex (0, dontSendNotification);
 }
 
 void SetupComponent::paint (Graphics& g)
@@ -40,7 +53,10 @@ void SetupComponent::resized()
 {
     fileButton.setBounds (100, 100, 100, 30);
     nextButton.setBounds (220, 100, 50, 30);
-    fileLabel.setBounds (100, 150, 100, 30);
+    fileLabel.setBounds (0, 150, 200, 30);
+
+    eqTypeBox.setBounds (100, 200, 200, 30);
+    eqAmtBox.setBounds (320, 200, 100, 30);
 }
 
 void SetupComponent::loadFile()
