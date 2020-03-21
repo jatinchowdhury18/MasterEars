@@ -20,6 +20,8 @@ private:
     SetupComponent setupComponent;
     std::unique_ptr<SessionComponent> sessComponent;
 
+    TextButton settingsButton { "Audio Settings" };
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };
 
