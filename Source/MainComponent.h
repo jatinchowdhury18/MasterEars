@@ -9,6 +9,7 @@ class MainComponent : public Component,
 {
 public:
     MainComponent();
+    ~MainComponent();
 
     void resized() override;
     void paint(Graphics& g) override;

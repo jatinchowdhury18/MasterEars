@@ -1,14 +1,22 @@
 #include "MainComponent.h"
+#include "DataManager.h"
 
 MainComponent::MainComponent()
 {
     setSize (500, 500);
+
+    DataManager::getInstance();
 
     addAndMakeVisible (setupComponent);
     // addChildComponent (setupComponent);
     setupComponent.addListener (this);
 
     // addAndMakeVisible (sessComponent);
+}
+
+MainComponent::~MainComponent()
+{
+    DataManager::deleteInstance();
 }
 
 void MainComponent::resized()

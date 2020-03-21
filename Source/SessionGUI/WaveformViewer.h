@@ -16,13 +16,49 @@ public:
     int mouseOverMarker (const MouseEvent& e);
 
 private:
-    AudioFormatManager formatManager;
+    class LoadingWindow : public ThreadWithProgressWindow
+    {
+    public:
+        LoadingWindow (AudioThumbnail* thumbnail) :
+            ThreadWithProgressWindow ("Loading Audio...", true, false),
+            thumbnail (thumbnail)
+        {}
+
+        void run() override
+        {
+            while (1)
+            {
+                if (threadShouldExit())
+                    break;
+
+                if (thumbnail->isFullyLoaded())
+                {
+                    // DBG ("Loaded!");
+                    break;
+                }
+                
+                setProgress (thumbnail->getProportionComplete());
+                // DBG (String (thumbnail->getProportionComplete()));
+
+                wait (10);
+            }
+        }
+
+    private:
+        const AudioThumbnail* thumbnail;
+
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LoadingWindow)
+    };
+
+    std::unique_ptr<LoadingWindow> loadingWindow;
+
     std::unique_ptr<AudioThumbnailCache> thumbnailCache;
     std::unique_ptr<AudioThumbnail> thumbnail;
 
-    float loopStart = 0.0f;
-    float loopEnd = 1.0f;
-    float playhead = 0.5f;
+    float markers[3] = { 0.0f, 1.0f, 0.5f };    // index 0 == loopStart
+                                                // index 1 == loopEnd
+                                                // index 2 == playhead
+    bool markerDragging[3] = { false, false, false };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WaveformViewer)    
 };
