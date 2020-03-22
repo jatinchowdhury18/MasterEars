@@ -8,7 +8,8 @@ enum
     hash = 0x2345,
 };
 
-WaveformViewer::WaveformViewer (File& file)
+WaveformViewer::WaveformViewer (File& file, const AudioTransportSource& source) :
+    source (source)
 {
     thumbnailCache = std::make_unique<AudioThumbnailCache> (cacheSize);
     thumbnail = std::make_unique<AudioThumbnail> (thumbSamples,
@@ -20,6 +21,19 @@ WaveformViewer::WaveformViewer (File& file)
     thumbnail->setSource (new FileInputSource (file));
     loadingWindow->runThread();
 
+    repaint();
+
+    startTimer (20);
+}
+
+void WaveformViewer::timerCallback()
+{
+    if (markerDragging[Playhead] == true)
+        return;
+
+    markers[Playhead] = float (source.getCurrentPosition() / source.getLengthInSeconds());
+
+    MessageManagerLock mml;
     repaint();
 }
 
@@ -36,15 +50,18 @@ void WaveformViewer::paint (Graphics& g)
             xMark * getWidth(), (float) getHeight(), 2.0f);
     };    
     
+    g.setColour (Colours::green);
+    drawMarker (g, markers[LoopStart]);
+    drawMarker (g, markers[LoopEnd]);
+
     g.setColour (Colours::white);
-    for (auto marker : markers)
-        drawMarker (g, marker);
+    drawMarker (g, markers[Playhead]);
 
     // grey out areas excluded by loop region
     g.setColour (Colours::black);
     g.setOpacity (0.5f);
-    g.fillRect (0.0f, 0.0f, markers[0] * getWidth(), (float) getHeight());
-    g.fillRect (markers[1] * getWidth(), 0.0f, (1.0f - markers[1]) * getWidth(), (float) getHeight());
+    g.fillRect (0.0f, 0.0f, markers[LoopStart] * getWidth(), (float) getHeight());
+    g.fillRect (markers[LoopEnd] * getWidth(), 0.0f, (1.0f - markers[LoopEnd]) * getWidth(), (float) getHeight());
 }
 
 int WaveformViewer::mouseOverMarker (const MouseEvent& e)
@@ -73,9 +90,12 @@ void WaveformViewer::mouseMove (const MouseEvent& e)
 
 void WaveformViewer::mouseDrag (const MouseEvent& e)
 {
-    auto setMarker = [=] (float& mark)
-    { 
-        mark = jlimit (0.0f, 1.0f, (float) e.x / (float) getWidth());
+    auto setMarker = [=] (MarkerType mark)
+    {
+        float lowerLimit = mark == LoopStart ? 0.0f : markers[LoopStart];
+        float upperLimit = mark == LoopEnd   ? 1.0f : markers[LoopEnd];
+
+        markers[mark] = jlimit (lowerLimit, upperLimit, (float) e.x / (float) getWidth());
         repaint(); 
     };
 
@@ -83,7 +103,7 @@ void WaveformViewer::mouseDrag (const MouseEvent& e)
     {
         if (markerDragging[i])
         {
-            setMarker (markers[i]);
+            setMarker ((MarkerType) i);
             return;
         }
     }
@@ -91,14 +111,24 @@ void WaveformViewer::mouseDrag (const MouseEvent& e)
     auto marker = mouseOverMarker (e);
     if (Range<int> (0, 3).contains (marker))
     {
-        setMarker (markers[marker]);
+        setMarker ((MarkerType) marker);
         markerDragging[marker] = true;
     }
 }
 
-void WaveformViewer::mouseUp (const MouseEvent& e)
+void WaveformViewer::mouseUp (const MouseEvent&)
 {
+    void (PlayheadListener::*listenerFuncs[]) (double) = { &PlayheadListener::playheadMoved,
+                                                           &PlayheadListener::loopStartMoved, 
+                                                           &PlayheadListener::loopEndMoved };
+
     for (int i = 0; i < 3; ++i)
-        markerDragging[i] = false;
+    {
+        if (markerDragging[i])
+        {
+            markerDragging[i] = false;
+            playheadListeners.call (listenerFuncs[i], markers[i]);
+        }
+    }
 }
 

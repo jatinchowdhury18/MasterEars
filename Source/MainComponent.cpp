@@ -18,6 +18,7 @@ MainComponent::MainComponent()
 
 MainComponent::~MainComponent()
 {
+    sessComponent.reset (nullptr);
     DataManager::deleteInstance();
 }
 

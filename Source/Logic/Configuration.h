@@ -31,7 +31,7 @@ public:
         DBG ("EQ Amount: " + getStringFor (amt));
     }
 
-    String getStringFor (EQType type)
+    static String getStringFor (EQType type)
     {
         if (type == EQType::Boost)
             return "Boost";
@@ -45,7 +45,7 @@ public:
         return "UNKNOWN!!!";
     }
 
-    String getStringFor (EQAmt amt)
+    static String getStringFor (EQAmt amt)
     {
         if (amt == EQAmt::Three)
             return "3dB";

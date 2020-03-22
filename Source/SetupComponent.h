@@ -9,14 +9,13 @@ public:
     SetupComponent();
 
     void resized() override;
-    void paint (Graphics& g) override;
 
     void loadFile();
 
     struct Listener
     {
         ~Listener() {}
-        virtual void setupComplete (File* file) {}
+        virtual void setupComplete (File* /*file*/) {}
     };
 
     void addListener (Listener* l) { listeners.add (l); }

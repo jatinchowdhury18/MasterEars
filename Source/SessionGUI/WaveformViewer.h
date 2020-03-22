@@ -1,12 +1,13 @@
 #ifndef WAVEFORMVIEWER_H_INCLUDED
 #define WAVEFORMVIEWER_H_INCLUDED
 
-#include "JuceHeader.h"
+#include "ThumbnailLoadingWindow.h"
 
-class WaveformViewer : public Component
+class WaveformViewer : public Component,
+                       private Timer
 {
 public:
-    WaveformViewer (File& file);
+    WaveformViewer (File& file, const AudioTransportSource& source);
 
     void paint (Graphics& g) override;
 
@@ -15,50 +16,37 @@ public:
     void mouseUp (const MouseEvent& e) override;
     int mouseOverMarker (const MouseEvent& e);
 
-private:
-    class LoadingWindow : public ThreadWithProgressWindow
+    struct PlayheadListener
     {
     public:
-        LoadingWindow (AudioThumbnail* thumbnail) :
-            ThreadWithProgressWindow ("Loading Audio...", true, false),
-            thumbnail (thumbnail)
-        {}
-
-        void run() override
-        {
-            while (1)
-            {
-                if (threadShouldExit())
-                    break;
-
-                if (thumbnail->isFullyLoaded())
-                {
-                    // DBG ("Loaded!");
-                    break;
-                }
-                
-                setProgress (thumbnail->getProportionComplete());
-                // DBG (String (thumbnail->getProportionComplete()));
-
-                wait (10);
-            }
-        }
-
-    private:
-        const AudioThumbnail* thumbnail;
-
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LoadingWindow)
+        virtual ~PlayheadListener() {}
+        virtual void playheadMoved (double /*newPosition*/) {}
+        virtual void loopStartMoved (double /*newPosition*/) {}
+        virtual void loopEndMoved (double /*newPosition*/) {}
     };
 
+    void addPlayheadListener (PlayheadListener* l) { playheadListeners.add (l); }
+    void removePlayheadListener (PlayheadListener* l) { playheadListeners.remove (l); }
+
+private:
     std::unique_ptr<LoadingWindow> loadingWindow;
+
+    const AudioTransportSource& source;
+    void timerCallback();
 
     std::unique_ptr<AudioThumbnailCache> thumbnailCache;
     std::unique_ptr<AudioThumbnail> thumbnail;
 
-    float markers[3] = { 0.0f, 1.0f, 0.5f };    // index 0 == loopStart
-                                                // index 1 == loopEnd
-                                                // index 2 == playhead
+    enum MarkerType
+    {
+        Playhead,
+        LoopStart,
+        LoopEnd
+    };
+
+    float markers[3] = { 0.0f, 0.0f, 1.0f };
     bool markerDragging[3] = { false, false, false };
+    ListenerList<PlayheadListener> playheadListeners;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WaveformViewer)    
 };

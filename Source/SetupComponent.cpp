@@ -45,10 +45,6 @@ SetupComponent::SetupComponent()
     eqAmtBox.setSelectedItemIndex (0, dontSendNotification);
 }
 
-void SetupComponent::paint (Graphics& g)
-{
-}
-
 void SetupComponent::resized()
 {
     fileButton.setBounds (100, 100, 100, 30);
