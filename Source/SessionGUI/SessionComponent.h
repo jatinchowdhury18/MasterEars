@@ -3,28 +3,16 @@
 
 #include "../Backend/Configuration.h"
 #include "../Backend/Logic.h"
-#include "../Backend/Filter.h"
-#include "WaveformViewer.h"
+#include "Player.h"
 #include "FreqButtons.h"
 
-class SessionComponent : public AudioAppComponent,
-                         private WaveformViewer::PlayheadListener,
+class SessionComponent : public Component,
                          private FreqButtons::Listener
 {
 public:
     SessionComponent (Configuration* config);
-    ~SessionComponent();
-
-    void prepareToPlay (int samplesPerBlock, double sampleRate) override;
-    void releaseResources() override;
-    void getNextAudioBlock (const AudioSourceChannelInfo& buffer) override;
 
     void resized() override;
-
-    void playheadMoved (double newPosition) override;
-    void loopStartMoved (double newPosition) override;
-    void loopEndMoved (double newPosition) override;
-
     void freqBandSelected (int band) override;
 
     struct Listener
@@ -37,14 +25,7 @@ public:
     void removeListener (Listener* l) { listeners.remove (l); }
 
 private:
-    std::unique_ptr<AudioFormatReaderSource> readerSource;
-    AudioTransportSource source;
-    double loopStartTime = 0.0;
-    double loopEndTime = 0.0;
-
-    TextButton playPauseButton { "Play" };
-
-    WaveformViewer waveform;
+    Player player;
     FreqButtons freqButtons;
 
     int trialNum = 0;
@@ -55,9 +36,6 @@ private:
     void startTrial();
     std::unique_ptr<Logic> logic;
     ListenerList<Listener> listeners;
-
-    ToggleButton filterButton;
-    Filter filter[2];
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SessionComponent)
 };

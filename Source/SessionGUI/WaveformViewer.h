@@ -52,4 +52,3 @@ private:
 };
 
 #endif // WAVEFORMVIEWER_H_INCLUDED
-

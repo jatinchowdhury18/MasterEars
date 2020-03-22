@@ -44,17 +44,15 @@ void WaveformViewer::paint (Graphics& g)
     thumbnail->drawChannels (g, getLocalBounds(), 0, thumbnail->getTotalLength(), 1.0f);
 
     // draw loop markers
-    auto drawMarker = [=] (Graphics& g, float xMark)
+    auto drawMarker = [=] (Graphics& g, float xMark, Colour colour = Colours::white)
     {
+        g.setColour (colour);
         g.drawLine (xMark * getWidth(), 0.0f,
             xMark * getWidth(), (float) getHeight(), 2.0f);
     };    
     
-    g.setColour (Colours::green);
-    drawMarker (g, markers[LoopStart]);
-    drawMarker (g, markers[LoopEnd]);
-
-    g.setColour (Colours::white);
+    drawMarker (g, markers[LoopStart], Colours::green);
+    drawMarker (g, markers[LoopEnd], Colours::green);
     drawMarker (g, markers[Playhead]);
 
     // grey out areas excluded by loop region
@@ -66,7 +64,7 @@ void WaveformViewer::paint (Graphics& g)
 
 int WaveformViewer::mouseOverMarker (const MouseEvent& e)
 {
-    const int range = 10;
+    const int range = 15;
     int count = 0;
     for (auto markX : markers)
     {
@@ -131,4 +129,3 @@ void WaveformViewer::mouseUp (const MouseEvent&)
         }
     }
 }
-

@@ -1,115 +1,25 @@
 #include "SessionComponent.h"
-#include "../DataManager.h"
 
 SessionComponent::SessionComponent (Configuration* config) :
-    AudioAppComponent (DataManager::getInstance()->getAudioDeviceManager()),
-    waveform (config->file, source),
+    player (config->file),
     numTrials (config->numTrials),
     config (config),
     logic (new Logic (config))
 {
-    auto reader = DataManager::getInstance()->getAudioFormatManager().createReaderFor (config->file);
-    readerSource = std::make_unique<AudioFormatReaderSource> (reader, true);
-    source.setSource (readerSource.get(), 0, nullptr, reader->sampleRate);
-    loopEndTime = source.getLengthInSeconds();
-    source.setGain (Decibels::decibelsToGain (-9.0f)); // make sure filter doesn't cause clipping!
-    setAudioChannels (0, 2);
-
-    addAndMakeVisible (playPauseButton);
-    playPauseButton.onClick = [=]
-    {
-        if (source.isPlaying())
-        {
-            source.stop();
-            playPauseButton.setButtonText ("Play");
-        }
-        else
-        {
-            source.start();
-            playPauseButton.setButtonText ("Pause");
-        }
-    };
-
-    addAndMakeVisible (waveform);
-    waveform.addPlayheadListener (this);
-
+    addAndMakeVisible (player);
     addAndMakeVisible (freqButtons);
     freqButtons.addListener (this);
     
     addAndMakeVisible (trialsLabel);
     trialsLabel.setText (String (trialNum+1) + "/" + String (numTrials), dontSendNotification);
 
-    addAndMakeVisible (filterButton);
-    filterButton.setButtonText ("Filter Enabled");
-
     DBG ("STARTING SESSION...");
     startTrial();
 }
 
-SessionComponent::~SessionComponent()
-{
-    source.stop();
-    shutdownAudio();
-}
-
-void SessionComponent::prepareToPlay (int samplesPerBlock, double sampleRate)
-{
-    source.prepareToPlay (samplesPerBlock, sampleRate);
-    for (int ch = 0; ch < 2; ++ch)
-        filter[ch].reset (sampleRate, filterButton.getToggleState());
-}
-
-void SessionComponent::releaseResources()
-{
-    source.releaseResources();
-}
-
-void SessionComponent::getNextAudioBlock (const AudioSourceChannelInfo& buffer)
-{
-    if (readerSource.get() == nullptr)
-    {
-        buffer.clearActiveBufferRegion();
-        return;
-    }
-
-    // looping...
-    if (source.getCurrentPosition() < loopStartTime || source.getCurrentPosition() > loopEndTime)
-        source.setPosition (loopStartTime);
-
-    source.getNextAudioBlock (buffer);
-
-    // filter
-    for (int ch = 0; ch < 2; ++ch)
-    {
-        filter[ch].setEnabled (filterButton.getToggleState());
-        filter[ch].processBlock (&buffer.buffer->getWritePointer (ch)[buffer.startSample], buffer.numSamples);
-    }
-}
-
-void SessionComponent::playheadMoved (double newPosition)
-{
-    source.setPosition (newPosition * source.getLengthInSeconds());
-    DBG ("Setting playhead position: " +
-        String (newPosition * source.getLengthInSeconds()) + " seconds");
-}
-
-void SessionComponent::loopStartMoved (double newPosition)
-{
-    loopStartTime = newPosition * source.getLengthInSeconds();
-    DBG ("Setting loop start position: " + String (loopStartTime) + " seconds");
-}
-
-void SessionComponent::loopEndMoved (double newPosition)
-{
-    loopEndTime = newPosition * source.getLengthInSeconds();
-    DBG ("Setting loop end position: " + String (loopStartTime) + " seconds");
-}
-
 void SessionComponent::resized()
 {
-    waveform.setBounds (10, 15, getWidth() - 20, 50);
-    playPauseButton.setBounds ((getWidth() - 50) / 2, 100, 100, 30);
-    filterButton.setBounds (getWidth() - 130, 100, 120, 30);
+    player.setBounds (0, 0, getWidth(), 150);
     freqButtons.setBounds (10, 175, getWidth() - 20, 125);
     trialsLabel.setBounds (10, 325, 50, 30);
 }
@@ -121,8 +31,7 @@ void SessionComponent::startTrial()
     DBG ("Setting filter freq: " + String (freq) + " Hz");
     DBG ("Setting filter gain: " + String (gainDB) + " dB");
     
-    for (int ch = 0; ch < 2; ++ch)
-        filter[ch].setFilterSpec (freq, gainDB);
+    player.setFilterSpec (freq, gainDB);
 }
 
 void SessionComponent::freqBandSelected (int band)
@@ -135,7 +44,7 @@ void SessionComponent::freqBandSelected (int band)
         startTrial();
     else
     {
-        source.stop();
+        player.stopPlayer();
         DBG ("ENDING SESSION...");
         listeners.call (&Listener::sessionComplete, logic.release());
     }

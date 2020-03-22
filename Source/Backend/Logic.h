@@ -7,74 +7,13 @@
 class Logic
 {
 public:
-    Logic (Configuration* config) :
-        config (config)
-    {
-        auto freqStrings = FreqButtons::createFreqStrings();
-        numBands = freqStrings.size();
-        freqBands.reset (new float [numBands]);
+    Logic (Configuration* config);
 
-        for (int i = 0; i < numBands; ++i)
-        {
-            freqBands[i] = freqStrings[i].upToFirstOccurrenceOf (" ", false, false).getFloatValue();
-            if (freqStrings[i].contains ("k"))
-                freqBands[i] *= 1000;
-        }
-    }
+    void getNextFilterSpec (float& freq, float& gainDB);
+    void guessMade (int guess);
 
-    void getNextFilterSpec (float& freq, float& gainDB)
-    {
-        auto band = rand.nextInt (numBands);
-        freq = freqBands[band];
-
-        if (config->amt == EQAmt::Three)
-            gainDB = 3.0f;
-        else if (config->amt == EQAmt::Six)
-            gainDB = 6.0f;
-        else if (config->amt == EQAmt::Nine)
-            gainDB = 9.0f;
-        else
-            jassertfalse;
-        
-        auto signMult = config->type == EQType::Cut ? -1 :
-            (config->type == EQType::BoostAndCut ? rand.nextInt (2)*2 - 1 : 1);
-        gainDB *= signMult;
-
-        truths.add (band);
-    }
-
-    void guessMade (int guess)
-    {
-        guesses.add (guess);
-    }
-
-    String getResults()
-    {
-        jassert (truths.size() == guesses.size());
-
-        String res;
-        auto freqStrings = FreqButtons::createFreqStrings();
-        for (int i = 0; i < truths.size(); ++i)
-        {
-            res += "Trial " + String (i) + ":\t";
-            res += "Actual: " + String (freqStrings[truths[i]]) + ",\t";
-            res += "Guess: " + String (freqStrings[guesses[i]]) + "\n";
-        }
-
-        auto score = calcScore();
-        res += "\nFINAL SCORE: " + String (score) + "\n";
-
-        return res;
-    }
-
-    int calcScore()
-    {
-        int score = 0;
-        for (int i = 0; i < truths.size(); ++i)
-            score += 10 - abs (truths[i] - guesses[i]);
-
-        return score;
-    }
+    String getResults();
+    int calcScore();
 
 private:
     Random rand;

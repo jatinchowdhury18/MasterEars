@@ -16,6 +16,7 @@ public:
     void resized() override;
     void paint(Graphics& g) override;
 
+    // Program flow callbacks
     void setupComplete (Configuration* config) override;
     void sessionComplete (Logic* logic) override;
 

@@ -6,51 +6,28 @@ SetupComponent::SetupComponent()
     fileButton.onClick = [=] { loadFile(); };
 
     addAndMakeVisible (nextButton);
-    nextButton.onClick = [=]
+    nextButton.onClick = [=] { nextButtonPressed(); };
+
+    auto setupLabel = [=] (Label& label, String text)
     {
-        if (file.get() == nullptr)
-        {
-            bubble.reset (new BubbleMessageComponent (1000));
-            addChildComponent (bubble.get());
-
-            AttributedString attStr;
-            attStr.append ("Must choose file!", Font (16.0f));
-            attStr.setColour (Colours::white);
-
-            auto rect = getLocalArea (&nextButton, nextButton.getLocalBounds());
-
-            bubble->showAt (rect, attStr, 1000, true, false);
-        }
-        else
-        {
-            std::unique_ptr<Configuration> config = std::make_unique<Configuration> (*file.get(),
-                static_cast<EQType> (eqTypeBox.getSelectedItemIndex()),
-                static_cast<EQAmt> (eqAmtBox.getSelectedItemIndex()),
-                numTrialsBox.getItemText (numTrialsBox.getSelectedItemIndex()).getIntValue());
-
-            listeners.call (&Listener::setupComplete, config.release());
-        }       
+        addAndMakeVisible (label);
+        label.setText (text, dontSendNotification);
+        label.setJustificationType (Justification::right);
     };
 
-    addAndMakeVisible (fileLabel);
-    fileLabel.setText ("[No File]", dontSendNotification);
-    fileLabel.setJustificationType (Justification::right);
+    setupLabel (fileLabel, "[No File]");
+    setupLabel (numTrialsLabel, "Number of trials: ");
 
-    addAndMakeVisible (eqTypeBox);
-    eqTypeBox.addItemList (Configuration::getTypeChoices(), 1);
-    eqTypeBox.setSelectedItemIndex (0, dontSendNotification);
+    auto setupComboBox = [=] (ComboBox& box, StringArray choices, int default = 0)
+    {
+        addAndMakeVisible (box);
+        box.addItemList (choices, 1);
+        box.setSelectedItemIndex (default, dontSendNotification);
+    };
 
-    addAndMakeVisible (eqAmtBox);
-    eqAmtBox.addItemList (Configuration::getAmtChoices(), 1);
-    eqAmtBox.setSelectedItemIndex (1, dontSendNotification);
-
-    addAndMakeVisible (numTrialsLabel);
-    numTrialsLabel.setText ("Number of trials:", dontSendNotification);
-    numTrialsLabel.setJustificationType (Justification::right);
-
-    addAndMakeVisible (numTrialsBox);
-    numTrialsBox.addItemList (StringArray ({ "5", "10", "15", "20" }), 1);
-    numTrialsBox.setSelectedItemIndex (1, dontSendNotification);
+    setupComboBox (eqTypeBox, Configuration::getTypeChoices());
+    setupComboBox (eqAmtBox, Configuration::getAmtChoices(), 1);
+    setupComboBox (numTrialsBox, StringArray ({ "5", "10", "15", "20" }), 1);
 
     addAndMakeVisible (instructions);
     instructions.setMultiLine (true);
@@ -98,6 +75,31 @@ void SetupComponent::loadFile()
         auto result = fileChooser.getResult();
         fileLabel.setText (result.getFileName(), dontSendNotification);
         file = std::make_unique<File> (result);
+    }
+}
+
+void SetupComponent::nextButtonPressed()
+{
+    if (file.get() == nullptr)
+    {
+        bubble.reset (new BubbleMessageComponent (1000));
+        addChildComponent (bubble.get());
+
+        AttributedString attStr;
+        attStr.append ("Must choose file!", Font (16.0f));
+        attStr.setColour (Colours::white);
+
+        auto rect = getLocalArea (&nextButton, nextButton.getLocalBounds());
+        bubble->showAt (rect, attStr, 1000, true, false);
+    }
+    else
+    {
+        std::unique_ptr<Configuration> config = std::make_unique<Configuration> (*file.get(),
+            static_cast<EQType> (eqTypeBox.getSelectedItemIndex()),
+            static_cast<EQAmt> (eqAmtBox.getSelectedItemIndex()),
+            numTrialsBox.getItemText (numTrialsBox.getSelectedItemIndex()).getIntValue());
+
+        listeners.call (&Listener::setupComplete, config.release());
     }
 }
 

@@ -12,6 +12,7 @@ public:
     void resized() override;
 
     void loadFile();
+    void nextButtonPressed();
 
     struct Listener
     {
@@ -44,4 +45,3 @@ private:
 };
 
 #endif // SETUPCOMPONENT_H_INCLUDED
-
