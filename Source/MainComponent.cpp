@@ -44,11 +44,11 @@ void MainComponent::paint(Graphics& g)
         Justification::centred, 1);
 }
 
-void MainComponent::setupComplete (File* file)
+void MainComponent::setupComplete (Configuration& config)
 {
     setupComponent.setVisible (false);
     
-    sessComponent = std::make_unique<SessionComponent> (*file);
+    sessComponent = std::make_unique<SessionComponent> (config);
     addAndMakeVisible (sessComponent.get());
     resized();
 }

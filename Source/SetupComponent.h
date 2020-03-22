@@ -1,7 +1,7 @@
 #ifndef SETUPCOMPONENT_H_INCLUDED
 #define SETUPCOMPONENT_H_INCLUDED
 
-#include "JuceHeader.h"
+#include "Logic/Configuration.h"
 
 class SetupComponent : public Component
 {
@@ -15,7 +15,7 @@ public:
     struct Listener
     {
         ~Listener() {}
-        virtual void setupComplete (File* /*file*/) {}
+        virtual void setupComplete (Configuration& /*config*/) {}
     };
 
     void addListener (Listener* l) { listeners.add (l); }
@@ -28,9 +28,11 @@ private:
     TextButton nextButton { "Next" };
 
     Label fileLabel;
+    Label numTrialsLabel;
     
     ComboBox eqTypeBox;
     ComboBox eqAmtBox;
+    ComboBox numTrialsBox;
 
     std::unique_ptr<File> file;
 

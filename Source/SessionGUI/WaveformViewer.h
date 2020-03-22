@@ -7,7 +7,7 @@ class WaveformViewer : public Component,
                        private Timer
 {
 public:
-    WaveformViewer (File& file, const AudioTransportSource& source);
+    WaveformViewer (const File& file, const AudioTransportSource& source);
 
     void paint (Graphics& g) override;
 

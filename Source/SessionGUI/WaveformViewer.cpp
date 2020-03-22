@@ -8,7 +8,7 @@ enum
     hash = 0x2345,
 };
 
-WaveformViewer::WaveformViewer (File& file, const AudioTransportSource& source) :
+WaveformViewer::WaveformViewer (const File& file, const AudioTransportSource& source) :
     source (source)
 {
     thumbnailCache = std::make_unique<AudioThumbnailCache> (cacheSize);

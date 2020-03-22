@@ -1,5 +1,4 @@
 #include "SetupComponent.h"
-#include "Logic/Configuration.h"
 
 SetupComponent::SetupComponent()
 {
@@ -26,9 +25,10 @@ SetupComponent::SetupComponent()
         {
             Configuration config (*file.get(),
                 static_cast<EQType> (eqTypeBox.getSelectedItemIndex()),
-                static_cast<EQAmt> (eqAmtBox.getSelectedItemIndex()));            
+                static_cast<EQAmt> (eqAmtBox.getSelectedItemIndex()),
+                numTrialsBox.getItemText (numTrialsBox.getSelectedItemIndex()).getIntValue());
 
-            listeners.call (&Listener::setupComplete, file.release());
+            listeners.call (&Listener::setupComplete, config);
         }       
     };
 
@@ -42,17 +42,28 @@ SetupComponent::SetupComponent()
 
     addAndMakeVisible (eqAmtBox);
     eqAmtBox.addItemList (Configuration::getAmtChoices(), 1);
-    eqAmtBox.setSelectedItemIndex (0, dontSendNotification);
+    eqAmtBox.setSelectedItemIndex (1, dontSendNotification);
+
+    addAndMakeVisible (numTrialsLabel);
+    numTrialsLabel.setText ("Number of trials:", dontSendNotification);
+    numTrialsLabel.setJustificationType (Justification::right);
+
+    addAndMakeVisible (numTrialsBox);
+    numTrialsBox.addItemList (StringArray ({ "5", "10", "15", "20" }), 1);
+    numTrialsBox.setSelectedItemIndex (1, dontSendNotification);
 }
 
 void SetupComponent::resized()
 {
     fileButton.setBounds (100, 100, 100, 30);
     nextButton.setBounds (220, 100, 50, 30);
-    fileLabel.setBounds (0, 150, 200, 30);
+    fileLabel.setBounds (0, 135, 200, 30);
 
     eqTypeBox.setBounds (100, 200, 200, 30);
     eqAmtBox.setBounds (320, 200, 100, 30);
+
+    numTrialsLabel.setBounds (100, 250, 200, 30);
+    numTrialsBox.setBounds (320, 250, 100, 30);
 }
 
 void SetupComponent::loadFile()

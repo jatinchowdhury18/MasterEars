@@ -14,7 +14,7 @@ public:
     void resized() override;
     void paint(Graphics& g) override;
 
-    void setupComplete (File* file) override;
+    void setupComplete (Configuration& config) override;
 
 private:
     SetupComponent setupComponent;

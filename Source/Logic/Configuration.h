@@ -20,15 +20,17 @@ enum class EQAmt
 class Configuration
 {
 public:
-    Configuration (File& file, EQType type, EQAmt amt) :
+    Configuration (File& file, EQType type, EQAmt amt, int numTrials) :
         file (file),
         type (type),
-        amt (amt)
+        amt (amt),
+        numTrials (numTrials)
     {
         DBG ("Created new configuration!");
         DBG ("File: " + file.getFileName());
         DBG ("EQ Type: " + getStringFor (type));
         DBG ("EQ Amount: " + getStringFor (amt));
+        DBG ("Num Trials: " + String (numTrials));
     }
 
     static String getStringFor (EQType type)
@@ -72,6 +74,7 @@ public:
     const File file;
     const EQType type;
     const EQAmt amt;
+    const int numTrials;
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Configuration)

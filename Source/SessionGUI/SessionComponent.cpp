@@ -1,11 +1,12 @@
 #include "SessionComponent.h"
 #include "../DataManager.h"
 
-SessionComponent::SessionComponent (File& file) :
+SessionComponent::SessionComponent (Configuration& config) :
     AudioAppComponent (DataManager::getInstance()->getAudioDeviceManager()),
-    waveform (file, source)
+    waveform (config.file, source),
+    numTrials (config.numTrials)
 {
-    auto reader = DataManager::getInstance()->getAudioFormatManager().createReaderFor (file);
+    auto reader = DataManager::getInstance()->getAudioFormatManager().createReaderFor (config.file);
     readerSource = std::make_unique<AudioFormatReaderSource> (reader, true);
     source.setSource (readerSource.get(), 0, nullptr, reader->sampleRate);
     loopEndTime = source.getLengthInSeconds();
@@ -28,6 +29,12 @@ SessionComponent::SessionComponent (File& file) :
 
     addAndMakeVisible (waveform);
     waveform.addPlayheadListener (this);
+
+    addAndMakeVisible (freqButtons);
+    freqButtons.addListener (this);
+    
+    addAndMakeVisible (trialsLabel);
+    trialsLabel.setText (String (trialNum) + "/" + String (config.numTrials), dontSendNotification);
 }
 
 SessionComponent::~SessionComponent()
@@ -80,5 +87,12 @@ void SessionComponent::resized()
 {
     waveform.setBounds (10, 15, getWidth() - 20, 50);
     playPauseButton.setBounds ((getWidth() - 50) / 2, 100, 100, 30);
+    freqButtons.setBounds (10, 175, getWidth() - 20, 125);
+    trialsLabel.setBounds (10, 325, 50, 30);
 }
 
+void SessionComponent::freqBandSelected (int band)
+{
+    trialNum++;
+    trialsLabel.setText (String (trialNum) + "/" + String (numTrials), dontSendNotification);
+}
