@@ -18,11 +18,11 @@ SetupComponent::SetupComponent()
     setupLabel (fileLabel, "[No File]");
     setupLabel (numTrialsLabel, "Number of trials: ");
 
-    auto setupComboBox = [=] (ComboBox& box, StringArray choices, int default = 0)
+    auto setupComboBox = [=] (ComboBox& box, StringArray choices, int def = 0)
     {
         addAndMakeVisible (box);
         box.addItemList (choices, 1);
-        box.setSelectedItemIndex (default, dontSendNotification);
+        box.setSelectedItemIndex (def, dontSendNotification);
     };
 
     setupComboBox (eqTypeBox, Configuration::getTypeChoices());
