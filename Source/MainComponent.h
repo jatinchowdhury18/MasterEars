@@ -3,6 +3,7 @@
 
 #include "SetupComponent.h"
 #include "SessionGUI/SessionComponent.h"
+#include "ResultsComponent.h"
 
 class MainComponent : public Component,
                       private SetupComponent::Listener,
@@ -21,6 +22,7 @@ public:
 private:
     SetupComponent setupComponent;
     std::unique_ptr<SessionComponent> sessComponent;
+    std::unique_ptr<ResultsComponent> resComponent;
 
     TextButton settingsButton { "Audio Settings" };
 

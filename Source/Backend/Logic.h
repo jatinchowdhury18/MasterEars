@@ -53,11 +53,27 @@ public:
         jassert (truths.size() == guesses.size());
 
         String res;
+        auto freqStrings = FreqButtons::createFreqStrings();
         for (int i = 0; i < truths.size(); ++i)
         {
-            res += "Truth: " + String (truths[i]) + ", Guess: " + String (guesses[i]) + "\n";
+            res += "Trial " + String (i) + ":\t";
+            res += "Actual: " + String (freqStrings[truths[i]]) + ",\t";
+            res += "Guess: " + String (freqStrings[guesses[i]]) + "\n";
         }
+
+        auto score = calcScore();
+        res += "\nFINAL SCORE: " + String (score) + "\n";
+
         return res;
+    }
+
+    int calcScore()
+    {
+        int score = 0;
+        for (int i = 0; i < truths.size(); ++i)
+            score += 10 - abs (truths[i] - guesses[i]);
+
+        return score;
     }
 
 private:

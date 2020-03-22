@@ -2,6 +2,7 @@
 #define SETUPCOMPONENT_H_INCLUDED
 
 #include "Backend/Configuration.h"
+#include "DataManager.h"
 
 class SetupComponent : public Component
 {

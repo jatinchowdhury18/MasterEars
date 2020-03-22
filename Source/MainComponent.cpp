@@ -10,8 +10,6 @@ MainComponent::MainComponent()
     addAndMakeVisible (setupComponent);
     setupComponent.addListener (this);
 
-    // addAndMakeVisible (sessComponent);
-
     addAndMakeVisible (settingsButton);
     settingsButton.onClick = [=] { DataManager::getInstance()->showAudioSettings(); };
 }
@@ -30,6 +28,9 @@ void MainComponent::resized()
     
     if (sessComponent.get() != nullptr)
         sessComponent->setBounds (bounds);
+
+    if (resComponent.get() != nullptr)
+        resComponent->setBounds (bounds);
 
     repaint();
 }
@@ -57,7 +58,8 @@ void MainComponent::setupComplete (Configuration* config)
 void MainComponent::sessionComplete (Logic* logic)
 {
     sessComponent->setVisible (false);
-    DBG (logic->getResults());
-    delete logic;
+    resComponent = std::make_unique<ResultsComponent> (logic);
+    addAndMakeVisible (resComponent.get());
+    resized();
 }
 

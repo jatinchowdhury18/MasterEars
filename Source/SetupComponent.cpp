@@ -68,7 +68,8 @@ void SetupComponent::resized()
 
 void SetupComponent::loadFile()
 {
-    FileChooser fileChooser ("Select file", File(), String ("*.wav"), true);
+    FileChooser fileChooser ("Select file", File(), DataManager::getInstance()->getAudioFormatManager()
+        .getWildcardForAllFormats(), true);
 
     if (fileChooser.browseForFileToOpen())
     {
