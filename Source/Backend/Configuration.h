@@ -63,7 +63,7 @@ public:
 
     static StringArray getTypeChoices()
     {
-        return StringArray ({ "Boost", "Cut", "Boost and Cut" });
+        return StringArray ({ "Boost", "Cut" }); // , "Boost and Cut" });
     }
 
     static StringArray getAmtChoices()

@@ -30,6 +30,7 @@ private:
 
     Label fileLabel;
     Label numTrialsLabel;
+    TextEditor instructions;
     
     ComboBox eqTypeBox;
     ComboBox eqAmtBox;
