@@ -12,6 +12,7 @@ SessionComponent::SessionComponent (Configuration* config) :
     readerSource = std::make_unique<AudioFormatReaderSource> (reader, true);
     source.setSource (readerSource.get(), 0, nullptr, reader->sampleRate);
     loopEndTime = source.getLengthInSeconds();
+    source.setGain (Decibels::decibelsToGain (-9.0f)); // make sure filter doesn't cause clipping!
     setAudioChannels (0, 2);
 
     addAndMakeVisible (playPauseButton);
@@ -38,8 +39,11 @@ SessionComponent::SessionComponent (Configuration* config) :
     addAndMakeVisible (trialsLabel);
     trialsLabel.setText (String (trialNum+1) + "/" + String (numTrials), dontSendNotification);
 
-    startTrial();
+    addAndMakeVisible (filterButton);
+    filterButton.setButtonText ("Filter Enabled");
+
     DBG ("STARTING SESSION...");
+    startTrial();
 }
 
 SessionComponent::~SessionComponent()
@@ -51,6 +55,8 @@ SessionComponent::~SessionComponent()
 void SessionComponent::prepareToPlay (int samplesPerBlock, double sampleRate)
 {
     source.prepareToPlay (samplesPerBlock, sampleRate);
+    for (int ch = 0; ch < 2; ++ch)
+        filter[ch].reset (sampleRate, filterButton.getToggleState());
 }
 
 void SessionComponent::releaseResources()
@@ -71,6 +77,13 @@ void SessionComponent::getNextAudioBlock (const AudioSourceChannelInfo& buffer)
         source.setPosition (loopStartTime);
 
     source.getNextAudioBlock (buffer);
+
+    // filter
+    for (int ch = 0; ch < 2; ++ch)
+    {
+        filter[ch].setEnabled (filterButton.getToggleState());
+        filter[ch].processBlock (&buffer.buffer->getWritePointer (ch)[buffer.startSample], buffer.numSamples);
+    }
 }
 
 void SessionComponent::playheadMoved (double newPosition)
@@ -96,6 +109,7 @@ void SessionComponent::resized()
 {
     waveform.setBounds (10, 15, getWidth() - 20, 50);
     playPauseButton.setBounds ((getWidth() - 50) / 2, 100, 100, 30);
+    filterButton.setBounds (getWidth() - 130, 100, 120, 30);
     freqButtons.setBounds (10, 175, getWidth() - 20, 125);
     trialsLabel.setBounds (10, 325, 50, 30);
 }
@@ -106,7 +120,9 @@ void SessionComponent::startTrial()
     logic->getNextFilterSpec (freq, gainDB);
     DBG ("Setting filter freq: " + String (freq) + " Hz");
     DBG ("Setting filter gain: " + String (gainDB) + " dB");
-    // setup filter
+    
+    for (int ch = 0; ch < 2; ++ch)
+        filter[ch].setFilterSpec (freq, gainDB);
 }
 
 void SessionComponent::freqBandSelected (int band)
@@ -119,6 +135,7 @@ void SessionComponent::freqBandSelected (int band)
         startTrial();
     else
     {
+        source.stop();
         DBG ("ENDING SESSION...");
         listeners.call (&Listener::sessionComplete, logic.release());
     }

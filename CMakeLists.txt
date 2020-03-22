@@ -50,8 +50,10 @@ jucer_project_files("MasterEars/Source"
   .         .         .         "Source/SessionGUI/FreqButtons.h"
   x         .         .         "Source/SessionGUI/FreqButtons.cpp"
   .         .         .         "Source/SessionGUI/ThumbnailLoadingWindow.h"
-  .         .         .         "Source/Logic/Configuration.h"
-  .         .         .         "Source/Logic/Logic.h"
+  .         .         .         "Source/Backend/Configuration.h"
+  .         .         .         "Source/Backend/Logic.h"
+  .         .         .         "Source/Backend/Filter.h"
+  x         .         .         "Source/Backend/Filter.cpp"
 )
 
 jucer_project_module(

@@ -1,8 +1,9 @@
 #ifndef SESSIONCOMPONENT_H_INCLUDED
 #define SESSIONCOMPONENT_H_INCLUDED
 
-#include "../Logic/Configuration.h"
-#include "../Logic/Logic.h"
+#include "../Backend/Configuration.h"
+#include "../Backend/Logic.h"
+#include "../Backend/Filter.h"
 #include "WaveformViewer.h"
 #include "FreqButtons.h"
 
@@ -54,6 +55,9 @@ private:
     void startTrial();
     std::unique_ptr<Logic> logic;
     ListenerList<Listener> listeners;
+
+    ToggleButton filterButton;
+    Filter filter[2];
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SessionComponent)
 };

@@ -1,7 +1,7 @@
 #ifndef SETUPCOMPONENT_H_INCLUDED
 #define SETUPCOMPONENT_H_INCLUDED
 
-#include "Logic/Configuration.h"
+#include "Backend/Configuration.h"
 
 class SetupComponent : public Component
 {
