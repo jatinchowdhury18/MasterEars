@@ -1,5 +1,7 @@
 # MasterEars
 
+[![Build Status](https://travis-ci.com/jatinchowdhury18/MasterEars.svg?token=Ub9niJrqG1Br1qaaxp7E&branch=master)](https://travis-ci.com/jatinchowdhury18/MasterEars)
+
 MasterEars is a listening test application for desktop (maybe someday for mobile) designed
 for mastering engineers to help train their ears.
 
