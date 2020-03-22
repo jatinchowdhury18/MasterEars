@@ -51,6 +51,7 @@ jucer_project_files("MasterEars/Source"
   x         .         .         "Source/SessionGUI/FreqButtons.cpp"
   .         .         .         "Source/SessionGUI/ThumbnailLoadingWindow.h"
   .         .         .         "Source/Logic/Configuration.h"
+  .         .         .         "Source/Logic/Logic.h"
 )
 
 jucer_project_module(

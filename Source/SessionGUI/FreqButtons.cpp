@@ -2,18 +2,7 @@
 
 FreqButtons::FreqButtons()
 {
-    StringArray freqs;
-    freqs.add ("60 Hz");
-    freqs.add ("125 Hz");
-    freqs.add ("250 Hz");
-    freqs.add ("500 Hz");
-    freqs.add ("1 kHz");
-    freqs.add ("2 kHz");
-    freqs.add ("4 kHz");
-    freqs.add ("8 kHz");
-    freqs.add ("16 kHz");
-
-    for (auto fStr : freqs)
+    for (auto fStr : freqStrings)
     {
         TextButton* button = new TextButton (fStr);
         button->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight);
@@ -30,6 +19,27 @@ FreqButtons::FreqButtons()
 
     addAndMakeVisible (submitButton);
     submitButton.onClick = [=] { submitButtonPressed(); };
+}
+
+StringArray FreqButtons::createFreqStrings()
+{
+    StringArray freqs;
+    freqs.add ("60 Hz");
+    freqs.add ("125 Hz");
+    freqs.add ("250 Hz");
+    freqs.add ("500 Hz");
+    freqs.add ("1 kHz");
+    freqs.add ("2 kHz");
+    freqs.add ("4 kHz");
+    freqs.add ("8 kHz");
+    freqs.add ("16 kHz");
+
+    return freqs;
+}
+
+int FreqButtons::getNumFreqBands()
+{
+    return createFreqStrings().size();
 }
 
 void FreqButtons::resized()

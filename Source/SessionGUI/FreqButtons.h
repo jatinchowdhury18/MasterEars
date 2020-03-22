@@ -20,11 +20,15 @@ public:
     void addListener (Listener* l) { listeners.add (l); }
     void removeListener (Listener* l) { listeners.remove (l); }
 
+    static int getNumFreqBands();
+    static StringArray createFreqStrings();
+
 private:
     void submitButtonPressed();
 
     OwnedArray<TextButton> buttons;
     TextButton submitButton { "Enter" };
+    StringArray freqStrings = createFreqStrings();
 
     std::unique_ptr<BubbleMessageComponent> bubble;
 

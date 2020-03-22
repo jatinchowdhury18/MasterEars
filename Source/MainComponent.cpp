@@ -44,12 +44,20 @@ void MainComponent::paint(Graphics& g)
         Justification::centred, 1);
 }
 
-void MainComponent::setupComplete (Configuration& config)
+void MainComponent::setupComplete (Configuration* config)
 {
     setupComponent.setVisible (false);
     
     sessComponent = std::make_unique<SessionComponent> (config);
+    sessComponent->addListener (this);
     addAndMakeVisible (sessComponent.get());
     resized();
+}
+
+void MainComponent::sessionComplete (Logic* logic)
+{
+    sessComponent->setVisible (false);
+    DBG (logic->getResults());
+    delete logic;
 }
 

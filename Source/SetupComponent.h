@@ -14,8 +14,8 @@ public:
 
     struct Listener
     {
-        ~Listener() {}
-        virtual void setupComplete (Configuration& /*config*/) {}
+        virtual ~Listener() {}
+        virtual void setupComplete (Configuration* /*config*/) {}
     };
 
     void addListener (Listener* l) { listeners.add (l); }

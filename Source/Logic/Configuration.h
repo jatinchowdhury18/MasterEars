@@ -12,7 +12,7 @@ enum class EQType
 
 enum class EQAmt
 {
-    Three,
+    Three = 0,
     Six,
     Nine,
 };

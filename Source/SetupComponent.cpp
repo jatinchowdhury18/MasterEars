@@ -23,12 +23,12 @@ SetupComponent::SetupComponent()
         }
         else
         {
-            Configuration config (*file.get(),
+            std::unique_ptr<Configuration> config = std::make_unique<Configuration> (*file.get(),
                 static_cast<EQType> (eqTypeBox.getSelectedItemIndex()),
                 static_cast<EQAmt> (eqAmtBox.getSelectedItemIndex()),
                 numTrialsBox.getItemText (numTrialsBox.getSelectedItemIndex()).getIntValue());
 
-            listeners.call (&Listener::setupComplete, config);
+            listeners.call (&Listener::setupComplete, config.release());
         }       
     };
 

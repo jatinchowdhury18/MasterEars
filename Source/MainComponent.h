@@ -5,7 +5,8 @@
 #include "SessionGUI/SessionComponent.h"
 
 class MainComponent : public Component,
-                      private SetupComponent::Listener
+                      private SetupComponent::Listener,
+                      private SessionComponent::Listener
 {
 public:
     MainComponent();
@@ -14,7 +15,8 @@ public:
     void resized() override;
     void paint(Graphics& g) override;
 
-    void setupComplete (Configuration& config) override;
+    void setupComplete (Configuration* config) override;
+    void sessionComplete (Logic* logic) override;
 
 private:
     SetupComponent setupComponent;
