@@ -1,5 +1,6 @@
 #include "WaveformViewer.h"
 #include "../DataManager.h"
+#include "../MyLNF.h"
 
 enum
 {
@@ -40,23 +41,23 @@ void WaveformViewer::timerCallback()
 void WaveformViewer::paint (Graphics& g)
 {
     // draw waveform
-    g.setColour (Colours::red);
+    g.setColour (MyColours::blue);
     thumbnail->drawChannels (g, getLocalBounds(), 0, thumbnail->getTotalLength(), 1.0f);
 
     // draw loop markers
-    auto drawMarker = [=] (Graphics& g, float xMark, Colour colour = Colours::white)
+    auto drawMarker = [=] (Graphics& g, float xMark, Colour colour)
     {
         g.setColour (colour);
         g.drawLine (xMark * getWidth(), 0.0f,
-            xMark * getWidth(), (float) getHeight(), 2.0f);
+            xMark * getWidth(), (float) getHeight(), 3.0f);
     };    
     
-    drawMarker (g, markers[LoopStart], Colours::green);
-    drawMarker (g, markers[LoopEnd], Colours::green);
-    drawMarker (g, markers[Playhead]);
+    drawMarker (g, markers[LoopStart], MyColours::red);
+    drawMarker (g, markers[LoopEnd],   MyColours::red);
+    drawMarker (g, markers[Playhead],  MyColours::green);
 
     // grey out areas excluded by loop region
-    g.setColour (Colours::black);
+    g.setColour (MyColours::black);
     g.setOpacity (0.5f);
     g.fillRect (0.0f, 0.0f, markers[LoopStart] * getWidth(), (float) getHeight());
     g.fillRect (markers[LoopEnd] * getWidth(), 0.0f, (1.0f - markers[LoopEnd]) * getWidth(), (float) getHeight());

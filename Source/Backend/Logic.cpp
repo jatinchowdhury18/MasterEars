@@ -38,6 +38,8 @@ String Logic::getResults()
     jassert (truths.size() == guesses.size());
 
     String res;
+    res += "MasterEars Test: " + Time::getCurrentTime().toString (true, true, false) + "\n\n";
+
     auto freqStrings = FreqButtons::createFreqStrings();
     for (int i = 0; i < truths.size(); ++i)
     {

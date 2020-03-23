@@ -19,9 +19,11 @@ SessionComponent::SessionComponent (Configuration* config) :
 
 void SessionComponent::resized()
 {
-    player.setBounds (0, 0, getWidth(), 150);
-    freqButtons.setBounds (10, 175, getWidth() - 20, 125);
-    trialsLabel.setBounds (10, 325, 50, 30);
+    const int dim = getHeight() / 6;
+    player.setBounds (0, 0, getWidth(), int (3.5*dim));
+    freqButtons.setBounds (10, player.getBottom(), getWidth() - 20, int (2.5*dim));
+    trialsLabel.setBounds (10, freqButtons.getBottom() - dim, dim, dim);
+    trialsLabel.setFont (float (dim) / 2);
 }
 
 void SessionComponent::startTrial()

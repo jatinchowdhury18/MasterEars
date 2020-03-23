@@ -20,6 +20,7 @@ Player::Player (const File& file) :
 
     addAndMakeVisible (filterButton);
     filterButton.setButtonText ("Filter Enabled");
+    filterButton.setToggleState (true, dontSendNotification);
 }
 
 Player::~Player()
@@ -103,7 +104,12 @@ void Player::setFilterSpec (float freq, float gainDB)
 
 void Player::resized()
 {
-    waveform.setBounds (10, 15, getWidth() - 20, 50);
-    playPauseButton.setBounds ((getWidth() - 50) / 2, 100, 100, 30);
-    filterButton.setBounds (getWidth() - 130, 100, 120, 30);
+    const int dim = getHeight() / 7;
+    const int pad = 10;
+
+    waveform.setBounds (pad, dim / 2, getWidth() - 2*pad, dim * 3);
+
+    const int w = (getWidth() - 2*pad) / 5;
+    playPauseButton.setBounds ((getWidth() - w) / 2, dim*4, w, int(1.5*dim));
+    filterButton.setBounds (getWidth() - w - pad, dim*4, w, int(1.5*dim));
 }

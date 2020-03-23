@@ -12,17 +12,16 @@ public:
     SetupComponent();
 
     void resized() override;
+    void paint (Graphics& g) override;
 
     void loadFile();
     void nextButtonPressed();
 
 private:
-    TextButton fileButton { "Load file" };
-    TextButton nextButton { "Next" };
+    TextButton fileButton { "Browse Files" };
+    TextButton nextButton { "NEXT" };
 
     Label fileLabel;
-    Label numTrialsLabel;
-    TextEditor instructions;
     
     ComboBox eqTypeBox;
     ComboBox eqAmtBox;

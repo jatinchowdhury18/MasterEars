@@ -1,4 +1,5 @@
 #include "FreqButtons.h"
+#include "../MyLNF.h"
 
 FreqButtons::FreqButtons()
 {
@@ -8,8 +9,7 @@ FreqButtons::FreqButtons()
         button->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight);
         button->setRadioGroupId (0x2345);
         button->setClickingTogglesState (true);
-        button->setColour (TextButton::buttonOnColourId, Colours::yellow);
-        button->setColour (TextButton::textColourOnId, Colours::black);
+        button->setColour (TextButton::buttonOnColourId, MyColours::red);
         addAndMakeVisible (button);
         buttons.add (button);
     }
@@ -18,6 +18,7 @@ FreqButtons::FreqButtons()
     buttons.getLast()->setConnectedEdges (Button::ConnectedOnLeft);
 
     addAndMakeVisible (submitButton);
+    submitButton.setColour (TextButton::buttonOnColourId, MyColours::green);
     submitButton.onClick = [=] { submitButtonPressed(); };
 }
 
@@ -45,11 +46,13 @@ int FreqButtons::getNumFreqBands()
 void FreqButtons::resized()
 {
     auto bWidth = (getWidth() - 10) / buttons.size();
+    auto bHeight = getHeight() / 3;
 
     for (int i = 0; i < buttons.size(); ++i)
-        buttons[i]->setBounds (5 + i * bWidth, 0, bWidth, 50);
+        buttons[i]->setBounds (5 + i * bWidth, 0, bWidth, bHeight);
 
-    submitButton.setBounds ((getWidth() - 100) / 2, 75, 100, 25);
+    const int w = getWidth() / 5;
+    submitButton.setBounds ((getWidth() - w) / 2, 3*bHeight/2, w, bHeight);
 }
 
 void FreqButtons::submitButtonPressed()
@@ -64,14 +67,14 @@ void FreqButtons::submitButtonPressed()
         }
     }
 
-    bubble.reset (new BubbleMessageComponent (1000));
+    bubble.reset (new BubbleMessageComponent (500));
     addChildComponent (bubble.get());
 
     AttributedString attStr;
-    attStr.append ("Must select a band!", Font (16.0f));
-    attStr.setColour (Colours::white);            
+    attStr.append ("Must select a band!", Font (24.0f));
+    attStr.setColour (MyColours::red);
 
     auto rect = getLocalArea (&submitButton, submitButton.getLocalBounds());
 
-    bubble->showAt (rect, attStr, 1000, true, false);
+    bubble->showAt (rect, attStr, 2000, true, false);
 }

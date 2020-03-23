@@ -4,6 +4,7 @@
 #include "SetupComponent.h"
 #include "SessionGUI/SessionComponent.h"
 #include "ResultsComponent.h"
+#include "MyLNF.h"
 
 class MainComponent : public Component,
                       private SetupComponent::Listener,
@@ -25,7 +26,9 @@ private:
     std::unique_ptr<SessionComponent> sessComponent;
     std::unique_ptr<ResultsComponent> resComponent;
 
-    TextButton settingsButton { "Audio Settings" };
+    DrawableButton settingsButton;
+
+    MyLNF lnf;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };

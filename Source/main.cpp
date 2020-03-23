@@ -1,5 +1,6 @@
 #include "JuceHeader.h"
 #include "MainComponent.h"
+#include "MyLNF.h"
 
 class MasterEarsApplication : public JUCEApplication
 {
@@ -31,15 +32,18 @@ public:
     class MainWindow : public DocumentWindow
     {
     public:
-        MainWindow (String name, String mode) : DocumentWindow (name,
-            Desktop::getInstance().getDefaultLookAndFeel().findColour (ResizableWindow::backgroundColourId),
-	    DocumentWindow::allButtons)
+        MainWindow (String name, String mode) : DocumentWindow (name, MyColours::black,
+	        DocumentWindow::allButtons)
         {
             setUsingNativeTitleBar (true);
-	    setContentOwned (new MainComponent, true);
+	        setContentOwned (new MainComponent, true);
 
-	    setResizable (true, false);
-	    centreWithSize (getWidth(), getHeight());
+	        setResizable (true, false);
+	        centreWithSize (getWidth(), getHeight());
+
+            auto screen = Desktop::getInstance().getDisplays().getMainDisplay().userArea;
+            setResizeLimits (getWidth() / 2, getHeight() - 150,
+                screen.getWidth(), screen.getHeight());
 
             setVisible (true);
         }
@@ -54,4 +58,3 @@ public:
 };
 
 START_JUCE_APPLICATION (MasterEarsApplication)
-

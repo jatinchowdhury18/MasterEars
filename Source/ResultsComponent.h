@@ -11,8 +11,11 @@ public:
     void resized() override;
 
 private:
+    void saveToFile();
+
     std::unique_ptr<Logic> logic;
     TextEditor text;
+    TextButton saveButton { "Save to file" };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ResultsComponent)
 };

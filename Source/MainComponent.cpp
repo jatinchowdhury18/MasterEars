@@ -1,9 +1,10 @@
 #include "MainComponent.h"
 #include "DataManager.h"
 
-MainComponent::MainComponent()
+MainComponent::MainComponent() :
+    settingsButton ("Audio Settings", DrawableButton::ImageFitted)
 {
-    setSize (500, 500);
+    setSize (850, 450);
 
     DataManager::getInstance();
 
@@ -11,7 +12,16 @@ MainComponent::MainComponent()
     setupComponent.addListener (this);
 
     addAndMakeVisible (settingsButton);
+    std::unique_ptr<Drawable> whiteGear (Drawable::createFromImageData
+        (BinaryData::cogsolid_svg, BinaryData::cogsolid_svgSize));
+    whiteGear->replaceColour (Colours::black, Colours::white);
+    std::unique_ptr<Drawable> redGear (Drawable::createFromImageData
+        (BinaryData::cogsolid_svg, BinaryData::cogsolid_svgSize));
+    redGear->replaceColour (Colours::black, MyColours::red);
+    settingsButton.setImages (whiteGear.get(), redGear.get(), redGear.get());
     settingsButton.onClick = [=] { DataManager::getInstance()->showAudioSettings(); };
+
+    LookAndFeel::setDefaultLookAndFeel (&lnf);
 }
 
 MainComponent::~MainComponent()
@@ -22,26 +32,30 @@ MainComponent::~MainComponent()
 
 void MainComponent::resized()
 {
-    Rectangle<int> bounds (0, 30, getWidth(), 450);
+    const int top = getHeight() * 2 / 9;
+    Rectangle<int> bounds (0, top, getWidth(), 3 * top);
+
     setupComponent.setBounds (bounds);
-    settingsButton.setBounds (10, getHeight() - 50, 100, 30);
-    
     if (sessComponent.get() != nullptr)
         sessComponent->setBounds (bounds);
 
     if (resComponent.get() != nullptr)
         resComponent->setBounds (bounds);
 
+    const int pad = 5;
+    const int buttonDim = top / 2 - pad * 2;
+    settingsButton.setBounds (pad, bounds.getBottom() + pad, buttonDim, buttonDim);
     repaint();
 }
 
 void MainComponent::paint(Graphics& g)
 {
-    g.fillAll (Colours::black);
+    g.fillAll (MyColours::black);
 
-    g.setColour (Colours::red);
-    g.setFont (18.0f);
-    g.drawFittedText ("Master Ears", getLocalBounds().getCentreX() - 50, 0, 100, 30,
+    const int top = getHeight() * 2 / 9;
+    g.setColour (Colours::white);
+    g.setFont (Font (float (top) / 2).boldened());
+    g.drawFittedText ("MasterEars", 0, 0, getWidth(), top,
         Justification::centred, 1);
 }
 

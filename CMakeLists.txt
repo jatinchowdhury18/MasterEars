@@ -45,6 +45,8 @@ jucer_project_files("MasterEars/Source"
   x         .         .         "Source/DataManager.cpp"
   .         .         .         "Source/ResultsComponent.h"
   x         .         .         "Source/ResultsComponent.cpp"
+  .         .         .         "Source/MyLNF.h"
+  x         .         .         "Source/MyLNF.cpp"
   .         .         .         "Source/SessionGUI/SessionComponent.h"
   x         .         .         "Source/SessionGUI/SessionComponent.cpp"
   .         .         .         "Source/SessionGUI/WaveformViewer.h"
@@ -60,6 +62,14 @@ jucer_project_files("MasterEars/Source"
   x         .         .         "Source/Backend/Logic.cpp"
   .         .         .         "Source/Backend/Filter.h"
   x         .         .         "Source/Backend/Filter.cpp"
+)
+
+jucer_project_files("MasterEars/Resources"
+# Compile   Xcode     Binary    File
+#           Resource  Resource
+  .         .         x         "Resources/NunitoSans-Regular.ttf"
+  .         .         x         "Resources/NunitoSans-Bold.ttf"
+  .         .         x         "Resources/cog-solid.svg"
 )
 
 jucer_project_module(
