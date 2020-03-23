@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/jatinchowdhury18/MasterEars.svg?token=Ub9niJrqG1Br1qaaxp7E&branch=master)](https://travis-ci.com/jatinchowdhury18/MasterEars)
 
 MasterEars is a listening test application for desktop (maybe someday for mobile) designed
-for mastering engineers to help train their ears.
+for mixing and mastering engineers to help train their ears.
 
 ## Installing
 TODO
@@ -22,7 +22,7 @@ with your idea!
 The EQ test mode applies an EQ to your audio file, boosting or cutting
 a single frequency band by a certain dB amount. Your task is to guess
 which band is being altered. You can configure the test to use either
-boosting, cutting, or both, as well as to use 3 dB, 6 dB, or 9 dB amounts.
+boosting or cutting, as well as to use 3 dB, 6 dB, or 9 dB amounts.
 
 ## Building
 MasterEars was developed using the [JUCE](https://github.com/WeAreROLI/JUCE)
