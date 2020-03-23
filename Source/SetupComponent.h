@@ -3,9 +3,11 @@
 
 #include "Backend/Configuration.h"
 #include "DataManager.h"
+#include "Defs.h"
 
 class SetupComponent : public Component
 {
+CREATE_LISTENER (Listener, listeners, virtual void setupComplete (Configuration* /*config*/) {})
 public:
     SetupComponent();
 
@@ -14,18 +16,7 @@ public:
     void loadFile();
     void nextButtonPressed();
 
-    struct Listener
-    {
-        virtual ~Listener() {}
-        virtual void setupComplete (Configuration* /*config*/) {}
-    };
-
-    void addListener (Listener* l) { listeners.add (l); }
-    void removeListener (Listener* l) { listeners.remove (l); }
-
 private:
-    ListenerList<Listener> listeners;
-
     TextButton fileButton { "Load file" };
     TextButton nextButton { "Next" };
 

@@ -2,10 +2,15 @@
 #define WAVEFORMVIEWER_H_INCLUDED
 
 #include "ThumbnailLoadingWindow.h"
+#include "../Defs.h"
 
 class WaveformViewer : public Component,
                        private Timer
 {
+CREATE_LISTENER (PlayheadListener, playheadListeners,
+    virtual void playheadMoved (double /*newPosition*/) {}\
+    virtual void loopStartMoved (double /*newPosition*/) {}\
+    virtual void loopEndMoved (double /*newPosition*/) {})
 public:
     WaveformViewer (const File& file, const AudioTransportSource& source);
 
@@ -15,18 +20,6 @@ public:
     void mouseDrag (const MouseEvent& e) override;
     void mouseUp (const MouseEvent& e) override;
     int mouseOverMarker (const MouseEvent& e);
-
-    struct PlayheadListener
-    {
-    public:
-        virtual ~PlayheadListener() {}
-        virtual void playheadMoved (double /*newPosition*/) {}
-        virtual void loopStartMoved (double /*newPosition*/) {}
-        virtual void loopEndMoved (double /*newPosition*/) {}
-    };
-
-    void addPlayheadListener (PlayheadListener* l) { playheadListeners.add (l); }
-    void removePlayheadListener (PlayheadListener* l) { playheadListeners.remove (l); }
 
 private:
     std::unique_ptr<LoadingWindow> loadingWindow;
@@ -46,7 +39,6 @@ private:
 
     float markers[3] = { 0.0f, 0.0f, 1.0f };
     bool markerDragging[3] = { false, false, false };
-    ListenerList<PlayheadListener> playheadListeners;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WaveformViewer)    
 };
