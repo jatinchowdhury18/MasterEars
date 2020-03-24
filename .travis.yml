@@ -60,29 +60,28 @@ script:
 
 after_success:
   - |
-    cd $TRAVIS_BUILD_DIR
+    if [[ $TRAVIS_PULL_REQUEST == 'false' ]]; then
+      cd $TRAVIS_BUILD_DIR
 
-    echo "Setting up Git..."
-    git config --global user.email "travis@travis-ci.org"
-    git config --global user.name "Travis CI"
-    git remote add auth https://${GH_TOKEN}@github.com/jatinchowdhury18/MasterEars.git
-    git fetch auth
-    git checkout -b Builds
-    git rebase auth/Builds
+      echo "Setting up Git..."
+      git config --global user.email "travis@travis-ci.org"
+      git config --global user.name "Travis CI"
+      git checkout -b Builds
 
-    echo "Copying files..."
-    mkdir $TRAVIS_BUILD_DIR/Bin/bins
-    cp -R $app $TRAVIS_BUILD_DIR/Bin/bins/
-    rm $TRAVIS_BUILD_DIR/Bin/${TRAVIS_OS_NAME}_app.zip
-    $zipcmd
-    rm -R $TRAVIS_BUILD_DIR/Bin/bins
+      echo "Copying files..."
+      mkdir $TRAVIS_BUILD_DIR/Bin/bins
+      cp -R $app $TRAVIS_BUILD_DIR/Bin/bins/
+      rm $TRAVIS_BUILD_DIR/Bin/${TRAVIS_OS_NAME}_app.zip
+      $zipcmd
+      rm -R $TRAVIS_BUILD_DIR/Bin/bins
 
-    echo "Committing files..."
-    git add Bin
-    git commit -m "Travis build - $TRAVIS_BUILD_NUMBER, $TRAVIS_OS_NAME"
+      echo "Committing files..."
+      git add Bin
+      git commit -m "Travis build - $TRAVIS_BUILD_NUMBER, $TRAVIS_OS_NAME"
 
-    echo "Pushing to branch..."
-    git push https://${GH_TOKEN}@github.com/jatinchowdhury18/MasterEars.git
+      echo "Pushing to branch..."
+      git push https://${GH_TOKEN}@github.com/jatinchowdhury18/MasterEars.git
+    fi
 
 env:
   global:
