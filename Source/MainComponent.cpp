@@ -21,6 +21,8 @@ MainComponent::MainComponent() :
     settingsButton.setImages (whiteGear.get(), redGear.get(), redGear.get());
     settingsButton.onClick = [=] { DataManager::getInstance()->showAudioSettings(); };
 
+    logo = Drawable::createFromImageData (BinaryData::MasterEarsIcon_png, BinaryData::MasterEarsIcon_pngSize);
+
     LookAndFeel::setDefaultLookAndFeel (&lnf);
 }
 
@@ -57,6 +59,11 @@ void MainComponent::paint(Graphics& g)
     g.setFont (Font (float (top) / 2).boldened());
     g.drawFittedText ("MasterEars", 0, 0, getWidth(), top,
         Justification::centred, 1);
+
+    const int pad = 10;
+    Rectangle<int> logoRect (getWidth() - top + pad, pad,
+        top - 2*pad, top - 2*pad);
+    logo->drawWithin (g, logoRect.toFloat(), RectanglePlacement::centred, 1.0f);
 }
 
 void MainComponent::setupComplete (Configuration* config)

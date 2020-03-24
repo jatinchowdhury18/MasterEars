@@ -6,7 +6,10 @@ MasterEars is a listening test application for desktop (maybe someday for mobile
 for mixing and mastering engineers to help train their ears.
 
 ## Installing
-TODO
+Navigate to the `Bin/` folder. Download the .zip file corresponding
+to your operating system. Extract the app from the .zip file and run.
+You may need to adjust your computer settings to allow applications
+from an unregistered developer.
 
 ## Using
 To use MasterEars simply load a song (currently only supports .wav files),

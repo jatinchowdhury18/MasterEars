@@ -44,6 +44,12 @@ void WaveformViewer::paint (Graphics& g)
     g.setColour (MyColours::blue);
     thumbnail->drawChannels (g, getLocalBounds(), 0, thumbnail->getTotalLength(), 1.0f);
 
+    // grey out areas excluded by loop region
+    g.setColour (MyColours::black);
+    g.setOpacity (0.6f);
+    g.fillRect (0.0f, 0.0f, markers[LoopStart] * getWidth(), (float) getHeight());
+    g.fillRect (markers[LoopEnd] * getWidth(), 0.0f, (1.0f - markers[LoopEnd]) * getWidth(), (float) getHeight());
+
     // draw loop markers
     auto drawMarker = [=] (Graphics& g, float xMark, Colour colour)
     {
@@ -52,20 +58,14 @@ void WaveformViewer::paint (Graphics& g)
             xMark * getWidth(), (float) getHeight(), 3.0f);
     };    
     
-    drawMarker (g, markers[LoopStart], MyColours::red);
-    drawMarker (g, markers[LoopEnd],   MyColours::red);
-    drawMarker (g, markers[Playhead],  MyColours::green);
-
-    // grey out areas excluded by loop region
-    g.setColour (MyColours::black);
-    g.setOpacity (0.5f);
-    g.fillRect (0.0f, 0.0f, markers[LoopStart] * getWidth(), (float) getHeight());
-    g.fillRect (markers[LoopEnd] * getWidth(), 0.0f, (1.0f - markers[LoopEnd]) * getWidth(), (float) getHeight());
+    drawMarker (g, markers[LoopStart], MyColours::green);
+    drawMarker (g, markers[LoopEnd],   MyColours::green);
+    drawMarker (g, markers[Playhead],  MyColours::red);
 }
 
 int WaveformViewer::mouseOverMarker (const MouseEvent& e)
 {
-    const int range = 15;
+    const int range = getWidth() / 30;
     int count = 0;
     for (auto markX : markers)
     {

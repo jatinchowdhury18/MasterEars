@@ -15,10 +15,15 @@ public:
     String getResults();
     int calcScore();
 
+    int getNumTrials() const { return truths.size(); }
+    String getGuess (int trial, bool truth);
+    int getScoreForTrial (int trial);
+
 private:
     Random rand;
     int numBands;
     std::unique_ptr<float[]> freqBands;
+    StringArray freqStrings;
 
     Array<int> guesses;
     Array<int> truths;

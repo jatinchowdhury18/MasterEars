@@ -43,8 +43,6 @@ jucer_project_files("MasterEars/Source"
   x         .         .         "Source/SetupComponent.cpp"
   .         .         .         "Source/DataManager.h"
   x         .         .         "Source/DataManager.cpp"
-  .         .         .         "Source/ResultsComponent.h"
-  x         .         .         "Source/ResultsComponent.cpp"
   .         .         .         "Source/MyLNF.h"
   x         .         .         "Source/MyLNF.cpp"
   .         .         .         "Source/SessionGUI/SessionComponent.h"
@@ -56,6 +54,10 @@ jucer_project_files("MasterEars/Source"
   .         .         .         "Source/SessionGUI/Player.h"
   x         .         .         "Source/SessionGUI/Player.cpp"
   .         .         .         "Source/SessionGUI/ThumbnailLoadingWindow.h"
+  .         .         .         "Source/ResultsGUI/ResultsComponent.h"
+  x         .         .         "Source/ResultsGUI/ResultsComponent.cpp"
+  .         .         .         "Source/ResultsGUI/ResultsList.h"
+  x         .         .         "Source/ResultsGUI/ResultsList.cpp"
   .         .         .         "Source/Backend/Configuration.h"
   x         .         .         "Source/Backend/Configuration.cpp"
   .         .         .         "Source/Backend/Logic.h"
@@ -70,6 +72,7 @@ jucer_project_files("MasterEars/Resources"
   .         .         x         "Resources/NunitoSans-Regular.ttf"
   .         .         x         "Resources/NunitoSans-Bold.ttf"
   .         .         x         "Resources/cog-solid.svg"
+  .         .         x         "Resources/MasterEarsIcon.png"
 )
 
 jucer_project_module(
@@ -129,6 +132,7 @@ jucer_project_module(
 
 jucer_export_target(
     "Xcode (MacOSX)"
+    ICON_LARGE "Resources/MasterEarsIcon.png"
 )
 
 jucer_export_target_configuration(
@@ -147,6 +151,7 @@ jucer_export_target_configuration(
 
 jucer_export_target(
     "Visual Studio 2017"
+    ICON_LARGE "Resources/MasterEarsIcon.png"
 )
 
 jucer_export_target_configuration(
@@ -163,6 +168,7 @@ jucer_export_target_configuration(
 
 jucer_export_target(
     "Linux Makefile"
+    ICON_LARGE "Resources/MasterEarsIcon.png"
 )
 
 jucer_export_target_configuration(

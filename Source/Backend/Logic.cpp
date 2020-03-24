@@ -3,7 +3,7 @@
 Logic::Logic (Configuration* config) :
     config (config)
 {
-    auto freqStrings = FreqButtons::createFreqStrings();
+    freqStrings = FreqButtons::createFreqStrings();
     numBands = freqStrings.size();
     freqBands.reset (new float [numBands]);
 
@@ -40,7 +40,6 @@ String Logic::getResults()
     String res;
     res += "MasterEars Test: " + Time::getCurrentTime().toString (true, true, false) + "\n\n";
 
-    auto freqStrings = FreqButtons::createFreqStrings();
     for (int i = 0; i < truths.size(); ++i)
     {
         res += "Trial " + String (i) + ":\t";
@@ -58,7 +57,17 @@ int Logic::calcScore()
 {
     int score = 0;
     for (int i = 0; i < truths.size(); ++i)
-        score += 10 - abs (truths[i] - guesses[i]);
+        score += getScoreForTrial (i);
 
     return score;
+}
+
+String Logic::getGuess (int trial, bool truth)
+{
+    return freqStrings[truth ? truths[trial] : guesses[trial]];
+}
+
+int Logic::getScoreForTrial (int trial)
+{
+    return 10 - abs (truths[trial] - guesses[trial]);
 }

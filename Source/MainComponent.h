@@ -3,7 +3,7 @@
 
 #include "SetupComponent.h"
 #include "SessionGUI/SessionComponent.h"
-#include "ResultsComponent.h"
+#include "ResultsGUI/ResultsComponent.h"
 #include "MyLNF.h"
 
 class MainComponent : public Component,
@@ -27,6 +27,7 @@ private:
     std::unique_ptr<ResultsComponent> resComponent;
 
     DrawableButton settingsButton;
+    std::unique_ptr<Drawable> logo;
 
     MyLNF lnf;
 

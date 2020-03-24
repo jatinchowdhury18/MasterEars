@@ -16,7 +16,10 @@ MyLNF::MyLNF()
     setColour (AlertWindow::backgroundColourId, MyColours::black);
     setColour (AlertWindow::outlineColourId, MyColours::blue);
     setColour (ProgressBar::foregroundColourId, MyColours::red);
-    setColour (TextEditor::backgroundColourId, MyColours::black);
+    setColour (ListBox::outlineColourId, MyColours::blue);
+    setColour (ListBox::backgroundColourId, MyColours::black);
+    setColour (ScrollBar::thumbColourId, MyColours::red);
+    setColour (ScrollBar::trackColourId, MyColours::red.withAlpha (0.3f));
 }
 
 Typeface::Ptr MyLNF::getTypefaceForFont (const Font& font)
