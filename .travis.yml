@@ -65,9 +65,10 @@ after_success:
     echo "Setting up Git..."
     git config --global user.email "travis@travis-ci.org"
     git config --global user.name "Travis CI"
-    git fetch origin
+    git remote add auth https://${GH_TOKEN}@github.com/jatinchowdhury18/MasterEars.git
+    git fetch auth
     git checkout -b Builds
-    git rebase origin/Builds
+    git rebase auth/Builds
 
     echo "Copying files..."
     mkdir $TRAVIS_BUILD_DIR/Bin/bins
