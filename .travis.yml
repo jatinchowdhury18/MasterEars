@@ -22,20 +22,20 @@ matrix:
       env:
         - GENERATOR="Unix Makefiles"
         - app=$TRAVIS_BUILD_DIR/build/MasterEars
-        - zipcmd="zip -r ${TRAVIS_OS_NAME}_app.zip $TRAVIS_BUILD_DIR/Bin/bins"
+        - zipcmd="zip -r $TRAVIS_BUILD_DIR/Bin/${TRAVIS_OS_NAME}_app.zip $TRAVIS_BUILD_DIR/Bin/bins"
     
     - os: osx
       env:
         - GENERATOR=Xcode
         - app=$TRAVIS_BUILD_DIR/build/Release/MasterEars.app
-        - zipcmd="zip -r ${TRAVIS_OS_NAME}_app.zip $TRAVIS_BUILD_DIR/Bin/bins"
+        - zipcmd="zip -r $TRAVIS_BUILD_DIR/Bin/${TRAVIS_OS_NAME}_app.zip $TRAVIS_BUILD_DIR/Bin/bins"
       osx_image: xcode9.4
 
     - os: windows
       env:
         - GENERATOR="Visual Studio 15 2017 Win64"
         - app=$TRAVIS_BUILD_DIR/build/Release/App/MasterEars.exe
-        - zipcmd="powershell Compress-Archive $TRAVIS_BUILD_DIR/Bin/bins/ ${TRAVIS_OS_NAME}_app.zip"
+        - zipcmd="powershell Compress-Archive $TRAVIS_BUILD_DIR/Bin/bins/ $TRAVIS_BUILD_DIR/Bin/${TRAVIS_OS_NAME}_app.zip"
 
 install:
   - echo ${GENERATOR}
