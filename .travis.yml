@@ -19,23 +19,14 @@ matrix:
             - libxinerama-dev
             - libxrandr-dev
             - webkit2gtk-4.0
-      env:
-        - GENERATOR="Unix Makefiles"
-        - app=$TRAVIS_BUILD_DIR/build/MasterEars
-        - zipcmd="zip -r $TRAVIS_BUILD_DIR/Bin/${TRAVIS_OS_NAME}_app.zip $TRAVIS_BUILD_DIR/Bin/bins"
+      env: GENERATOR="Unix Makefiles"
     
     - os: osx
-      env:
-        - GENERATOR=Xcode
-        - app=$TRAVIS_BUILD_DIR/build/Release/MasterEars.app
-        - zipcmd="zip -r $TRAVIS_BUILD_DIR/Bin/${TRAVIS_OS_NAME}_app.zip $TRAVIS_BUILD_DIR/Bin/bins"
+      env: GENERATOR=Xcode
       osx_image: xcode9.4
 
     - os: windows
-      env:
-        - GENERATOR="Visual Studio 15 2017 Win64"
-        - app=$TRAVIS_BUILD_DIR/build/Release/App/MasterEars.exe
-        - zipcmd="powershell Compress-Archive $TRAVIS_BUILD_DIR/Bin/bins/ $TRAVIS_BUILD_DIR/Bin/${TRAVIS_OS_NAME}_app.zip"
+      env: GENERATOR="Visual Studio 15 2017 Win64"
 
 install:
   - echo ${GENERATOR}
@@ -60,7 +51,7 @@ script:
 
 after_success:
   - |
-    if [[ $TRAVIS_PULL_REQUEST == 'false' ]]; then
+    if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
       cd $TRAVIS_BUILD_DIR
 
       echo "Setting up Git..."
@@ -70,17 +61,17 @@ after_success:
 
       echo "Copying files..."
       mkdir $TRAVIS_BUILD_DIR/Bin/bins
-      cp -R $app $TRAVIS_BUILD_DIR/Bin/bins/
-      rm $TRAVIS_BUILD_DIR/Bin/${TRAVIS_OS_NAME}_app.zip
-      $zipcmd
+      cp -R $TRAVIS_BUILD_DIR/build/Release/MasterEars.app $TRAVIS_BUILD_DIR/Bin/bins/
+      rm $TRAVIS_BUILD_DIR/Bin/MasterEars_Mac.zip
+      zip -r $TRAVIS_BUILD_DIR/Bin/MasterEars_Mac.zip $TRAVIS_BUILD_DIR/Bin/bins
       rm -R $TRAVIS_BUILD_DIR/Bin/bins
 
       echo "Committing files..."
       git add Bin
-      git commit -m "Travis build - $TRAVIS_BUILD_NUMBER, $TRAVIS_OS_NAME"
+      git commit -m "Travis Mac build - $TRAVIS_BUILD_NUMBER"
 
       echo "Pushing to branch..."
-      git push https://${GH_TOKEN}@github.com/jatinchowdhury18/MasterEars.git
+      git push https://${GH_TOKEN}@github.com/jatinchowdhury18/MasterEars.git -f
     fi
 
 env:
