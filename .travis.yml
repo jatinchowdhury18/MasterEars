@@ -65,13 +65,14 @@ after_success:
     echo "Setting up Git..."
     git config --global user.email "travis@travis-ci.org"
     git config --global user.name "Travis CI"
+    git fetch origin
     git checkout -b Builds
     git rebase origin/Builds
 
     echo "Copying files..."
     mkdir $TRAVIS_BUILD_DIR/Bin/bins
     cp -R $app $TRAVIS_BUILD_DIR/Bin/bins/
-    rm ${TRAVIS_OS_NAME}_app.zip
+    rm $TRAVIS_BUILD_DIR/Bin/${TRAVIS_OS_NAME}_app.zip
     $zipcmd
     rm -R $TRAVIS_BUILD_DIR/Bin/bins
 
