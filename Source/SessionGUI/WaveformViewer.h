@@ -25,7 +25,7 @@ private:
     std::unique_ptr<LoadingWindow> loadingWindow;
 
     const AudioTransportSource& source;
-    void timerCallback();
+    void timerCallback() override;
 
     std::unique_ptr<AudioThumbnailCache> thumbnailCache;
     std::unique_ptr<AudioThumbnail> thumbnail;
