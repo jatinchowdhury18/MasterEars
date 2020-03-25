@@ -64,6 +64,7 @@ after_success:
       cd $TRAVIS_BUILD_DIR/Bin/
       rm MasterEars_Mac.zip
       zip -r MasterEars_Mac.zip MasterEars.app
+      rm -R MasterEars.app
 
       echo "Committing files..."
       cd $TRAVIS_BUILD_DIR
