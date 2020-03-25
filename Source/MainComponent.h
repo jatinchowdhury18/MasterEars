@@ -27,7 +27,7 @@ private:
     std::unique_ptr<ResultsComponent> resComponent;
 
     DrawableButton settingsButton;
-    std::unique_ptr<Drawable> logo;
+    DrawableButton logoButton;
 
     MyLNF lnf;
 

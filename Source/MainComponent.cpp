@@ -2,7 +2,8 @@
 #include "DataManager.h"
 
 MainComponent::MainComponent() :
-    settingsButton ("Audio Settings", DrawableButton::ImageFitted)
+    settingsButton ("Audio Settings", DrawableButton::ImageFitted),
+    logoButton ("Logo", DrawableButton::ImageFitted)
 {
     setSize (850, 450);
 
@@ -21,7 +22,11 @@ MainComponent::MainComponent() :
     settingsButton.setImages (whiteGear.get(), redGear.get(), redGear.get());
     settingsButton.onClick = [=] { DataManager::getInstance()->showAudioSettings(); };
 
-    logo = Drawable::createFromImageData (BinaryData::MasterEarsIcon_png, BinaryData::MasterEarsIcon_pngSize);
+    addAndMakeVisible (logoButton);
+    auto logo = Drawable::createFromImageData (BinaryData::MasterEarsIcon_png, BinaryData::MasterEarsIcon_pngSize);
+    logoButton.setImages (logo.get());
+    logoButton.setMouseCursor (MouseCursor::PointingHandCursor);
+    logoButton.onClick = [] { URL ("https://github.com/jatinchowdhury18/MasterEars").launchInDefaultBrowser(); };
 
     LookAndFeel::setDefaultLookAndFeel (&lnf);
 }
@@ -47,6 +52,10 @@ void MainComponent::resized()
     const int pad = 5;
     const int buttonDim = top / 2 - pad * 2;
     settingsButton.setBounds (pad, bounds.getBottom() + pad, buttonDim, buttonDim);
+
+    logoButton.setBounds (getWidth() - top + 2*pad, 2*pad,
+        top - 4*pad, top - 4*pad);
+
     repaint();
 }
 
@@ -59,11 +68,6 @@ void MainComponent::paint(Graphics& g)
     g.setFont (Font (float (top) / 2).boldened());
     g.drawFittedText ("MasterEars", 0, 0, getWidth(), top,
         Justification::centred, 1);
-
-    const int pad = 10;
-    Rectangle<int> logoRect (getWidth() - top + pad, pad,
-        top - 2*pad, top - 2*pad);
-    logo->drawWithin (g, logoRect.toFloat(), RectanglePlacement::centred, 1.0f);
 }
 
 void MainComponent::setupComplete (Configuration* config)
