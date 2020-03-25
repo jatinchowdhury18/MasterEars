@@ -5,6 +5,7 @@
 #include "WaveformViewer.h"
 
 class Player : public AudioAppComponent,
+               private ChangeListener,
                private WaveformViewer::PlayheadListener
 {
 public:
@@ -21,6 +22,7 @@ public:
     void playheadMoved (double newPosition) override;
     void loopStartMoved (double newPosition) override;
     void loopEndMoved (double newPosition) override;
+    void changeListenerCallback (ChangeBroadcaster* source) override;
 
     void stopPlayer() { source.stop(); }
     void setFilterSpec (float freq, float gainDB);

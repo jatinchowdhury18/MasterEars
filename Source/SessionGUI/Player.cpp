@@ -63,18 +63,23 @@ void Player::getNextAudioBlock (const AudioSourceChannelInfo& buffer)
     }
 }
 
+void Player::changeListenerCallback (ChangeBroadcaster* changeSource)
+{
+    if (changeSource == &source)
+    {
+        if (source.isPlaying())
+            playPauseButton.setButtonText ("Pause");
+        else
+            playPauseButton.setButtonText ("Play");
+    }
+}
+
 void Player::playPauseButtonClicked()
 {
     if (source.isPlaying())
-    {
         source.stop();
-        playPauseButton.setButtonText ("Play");
-    }
     else
-    {
         source.start();
-        playPauseButton.setButtonText ("Pause");
-    }
 }
 
 void Player::playheadMoved (double newPosition)
