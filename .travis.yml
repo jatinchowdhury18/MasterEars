@@ -59,15 +59,11 @@ after_success:
       git config --global user.name "Travis CI"
       git checkout -b Builds
 
-      echo "Copying files..."
-      mkdir $TRAVIS_BUILD_DIR/Bin/bins
-      cp -R $TRAVIS_BUILD_DIR/build/Release/MasterEars.app $TRAVIS_BUILD_DIR/Bin/bins/
-
-      echo "Zipping files..."
+      echo "Copying and zipping files..."
+      cp -R $TRAVIS_BUILD_DIR/build/Release/MasterEars.app $TRAVIS_BUILD_DIR/Bin/
       cd $TRAVIS_BUILD_DIR/Bin/
       rm MasterEars_Mac.zip
-      zip -r MasterEars_Mac.zip bins/
-      rm -R bins
+      zip -r MasterEars_Mac.zip MasterEars.app
 
       echo "Committing files..."
       cd $TRAVIS_BUILD_DIR
