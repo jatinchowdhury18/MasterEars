@@ -7,10 +7,19 @@ Configuration::Configuration (File& file, EQType type, EQAmt amt, int numTrials)
     numTrials (numTrials)
 {
     DBG ("Created new configuration!");
-    DBG ("File: " + file.getFileName());
-    DBG ("EQ Type: " + getStringFor (type));
-    DBG ("EQ Amount: " + getStringFor (amt));
-    DBG ("Num Trials: " + String (numTrials));
+    DBG (getConfigString());
+}
+
+String Configuration::getConfigString() const
+{
+    String res;
+    res += "Configuration:\n";
+    res += "File: " + file.getFileName() + "\n";
+    res += "EQ Type: " + getStringFor (type) + "\n";
+    res += "EQ Amount: " + getStringFor (amt) + "\n";
+    res += "Num Trials: " + String (numTrials) + "\n";
+
+    return res;
 }
 
 String Configuration::getStringFor (EQType type)

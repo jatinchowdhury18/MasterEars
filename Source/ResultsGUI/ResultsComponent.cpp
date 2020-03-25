@@ -81,6 +81,6 @@ void ResultsComponent::saveToFile()
     {
         auto result = fileChooser.getResult();
         result.create();
-        result.replaceWithText (logic->getResults());
+        result.replaceWithText (logic->getResultsString());
     }
 }

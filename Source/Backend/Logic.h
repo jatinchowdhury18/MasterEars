@@ -12,7 +12,7 @@ public:
     void getNextFilterSpec (float& freq, float& gainDB);
     void guessMade (int guess);
 
-    String getResults();
+    String getResultsString();
     int calcScore();
 
     int getNumTrials() const { return truths.size(); }

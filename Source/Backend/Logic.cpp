@@ -33,18 +33,21 @@ void Logic::guessMade (int guess)
     guesses.add (guess);
 }
 
-String Logic::getResults()
+String Logic::getResultsString()
 {
     jassert (truths.size() == guesses.size());
 
     String res;
     res += "MasterEars Test: " + Time::getCurrentTime().toString (true, true, false) + "\n\n";
 
+    res += config->getConfigString() + "\n";
+
     for (int i = 0; i < truths.size(); ++i)
     {
         res += "Trial " + String (i) + ":\t";
         res += "Actual: " + String (freqStrings[truths[i]]) + ",\t";
-        res += "Guess: " + String (freqStrings[guesses[i]]) + "\n";
+        res += "Guess: " + String (freqStrings[guesses[i]]) + ",\t";
+        res += "Score: " + String (getScoreForTrial (i)) + "\n";
     }
 
     auto score = calcScore();

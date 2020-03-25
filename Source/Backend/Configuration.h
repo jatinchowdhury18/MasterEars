@@ -22,6 +22,8 @@ class Configuration
 public:
     Configuration (File& file, EQType type, EQAmt amt, int numTrials);
 
+    String getConfigString() const;
+
     static String getStringFor (EQType type);
     static String getStringFor (EQAmt amt);
 
