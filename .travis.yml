@@ -62,11 +62,15 @@ after_success:
       echo "Copying files..."
       mkdir $TRAVIS_BUILD_DIR/Bin/bins
       cp -R $TRAVIS_BUILD_DIR/build/Release/MasterEars.app $TRAVIS_BUILD_DIR/Bin/bins/
-      rm $TRAVIS_BUILD_DIR/Bin/MasterEars_Mac.zip
-      zip -r $TRAVIS_BUILD_DIR/Bin/MasterEars_Mac.zip $TRAVIS_BUILD_DIR/Bin/bins
-      rm -R $TRAVIS_BUILD_DIR/Bin/bins
+
+      echo "Zipping files..."
+      cd $TRAVIS_BUILD_DIR/Bin/
+      rm MasterEars_Mac.zip
+      zip -r MasterEars_Mac.zip bins/
+      rm -R bins
 
       echo "Committing files..."
+      cd $TRAVIS_BUILD_DIR
       git add Bin
       git commit -m "Travis Mac build - $TRAVIS_BUILD_NUMBER"
 
