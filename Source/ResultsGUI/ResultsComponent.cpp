@@ -5,17 +5,15 @@ ResultsComponent::ResultsComponent (Logic* logic) :
     logic (logic),
     list (logic)
 {
-    // addAndMakeVisible (text);
-    // text.setMultiLine (true);
-    // text.setFont (18.0f);
-    // text.setReadOnly (true);
-    // text.setText (logic->getResults());
-    // text.setScrollbarsShown (true);
     addAndMakeVisible (list);
 
     addAndMakeVisible (saveButton);
     saveButton.setColour (TextButton::buttonOnColourId, MyColours::green);
     saveButton.onClick = [=] { saveToFile(); };
+
+    addAndMakeVisible (restartButton);
+    restartButton.setColour (TextButton::buttonOnColourId, MyColours::red);
+    restartButton.onClick = [=] { listeners.call (&Listener::goHome); };
 }
 
 void ResultsComponent::paint (Graphics& g)
@@ -68,7 +66,9 @@ void ResultsComponent::resized()
     list.setRowHeight (list.getHeight() / 6);
     list.setBounds (list.getBounds().withTrimmedTop (list.getRowHeight()));
 
-    saveButton.setBounds ((getWidth() - w) / 2, list.getBottom() + h/2, w, h);
+    const int pad = 10;
+    saveButton.setBounds (getWidth() / 2 - w - pad, list.getBottom() + h/2, w, h);
+    restartButton.setBounds (getWidth() / 2 + pad, list.getBottom() + h/2, w, h);
 
     repaint();
 }

@@ -84,7 +84,15 @@ void MainComponent::sessionComplete (Logic* logic)
 {
     sessComponent->setVisible (false);
     resComponent = std::make_unique<ResultsComponent> (logic);
+    resComponent->addListener (this);
     addAndMakeVisible (resComponent.get());
     resized();
 }
 
+void MainComponent::goHome()
+{
+    setupComponent.setVisible (true);
+    sessComponent.reset (nullptr);
+    resComponent.reset (nullptr);
+    resized();
+}

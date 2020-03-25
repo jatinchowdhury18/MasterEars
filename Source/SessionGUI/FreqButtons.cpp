@@ -20,6 +20,10 @@ FreqButtons::FreqButtons()
     addAndMakeVisible (submitButton);
     submitButton.setColour (TextButton::buttonOnColourId, MyColours::green);
     submitButton.onClick = [=] { submitButtonPressed(); };
+
+    addAndMakeVisible (quitButton);
+    quitButton.setColour (TextButton::buttonOnColourId, MyColours::red);
+    quitButton.onClick = [=] { quitButtonPressed(); };
 }
 
 StringArray FreqButtons::createFreqStrings()
@@ -52,7 +56,9 @@ void FreqButtons::resized()
         buttons[i]->setBounds (5 + i * bWidth, 0, bWidth, bHeight);
 
     const int w = getWidth() / 5;
-    submitButton.setBounds ((getWidth() - w) / 2, 3*bHeight/2, w, bHeight);
+    const int pad = 10;
+    submitButton.setBounds (getWidth() / 2 - w - pad, 3*bHeight/2, w, bHeight);
+    quitButton.setBounds (getWidth() / 2 + pad, 3*bHeight/2, w, bHeight);
 }
 
 void FreqButtons::submitButtonPressed()
@@ -77,4 +83,13 @@ void FreqButtons::submitButtonPressed()
     auto rect = getLocalArea (&submitButton, submitButton.getLocalBounds());
 
     bubble->showAt (rect, attStr, 2000, true, false);
+}
+
+void FreqButtons::quitButtonPressed()
+{
+    int res = AlertWindow::showYesNoCancelBox (AlertWindow::WarningIcon, "Quitting",
+        "Are you sure you want to quit? All progress will be lost.");
+
+    if (res == 1) // quitting
+        listeners.call (&Listener::quit);
 }

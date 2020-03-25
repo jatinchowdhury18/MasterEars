@@ -8,7 +8,8 @@
 
 class MainComponent : public Component,
                       private SetupComponent::Listener,
-                      private SessionComponent::Listener
+                      private SessionComponent::Listener,
+                      private ResultsComponent::Listener
 {
 public:
     MainComponent();
@@ -20,6 +21,7 @@ public:
     // Program flow callbacks
     void setupComplete (Configuration* config) override;
     void sessionComplete (Logic* logic) override;
+    void goHome() override;
 
 private:
     SetupComponent setupComponent;

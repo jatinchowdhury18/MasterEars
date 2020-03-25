@@ -6,7 +6,8 @@
 
 class FreqButtons : public Component
 {
-CREATE_LISTENER (Listener, listeners, virtual void freqBandSelected (int /*band*/) {})
+CREATE_LISTENER (Listener, listeners, virtual void freqBandSelected (int /*band*/) {}\
+                                      virtual void quit() {})
 public:
     FreqButtons();
 
@@ -17,9 +18,11 @@ public:
 
 private:
     void submitButtonPressed();
+    void quitButtonPressed();
 
     OwnedArray<TextButton> buttons;
     TextButton submitButton { "Enter" };
+    TextButton quitButton   { "Quit" };
     StringArray freqStrings = createFreqStrings();
 
     std::unique_ptr<BubbleMessageComponent> bubble;

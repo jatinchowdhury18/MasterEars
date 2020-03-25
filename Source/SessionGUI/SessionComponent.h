@@ -10,12 +10,14 @@
 class SessionComponent : public Component,
                          private FreqButtons::Listener
 {
-CREATE_LISTENER (Listener, listeners, virtual void sessionComplete (Logic* /*logic*/) {})
+CREATE_LISTENER (Listener, listeners, virtual void sessionComplete (Logic* /*logic*/) {}\
+                                      virtual void goHome() {})
 public:
     SessionComponent (Configuration* config);
 
     void resized() override;
     void freqBandSelected (int band) override;
+    void quit() override;
 
 private:
     Player player;

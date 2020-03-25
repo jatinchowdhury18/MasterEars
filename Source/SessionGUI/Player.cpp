@@ -10,6 +10,7 @@ Player::Player (const File& file) :
     source.setSource (readerSource.get(), 0, nullptr, reader->sampleRate);
     loopEndTime = source.getLengthInSeconds();
     source.setGain (Decibels::decibelsToGain (-9.0f)); // make sure filter doesn't cause clipping!
+    source.addChangeListener (this);
     setAudioChannels (0, 2);
 
     addAndMakeVisible (playPauseButton);

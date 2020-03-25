@@ -51,3 +51,8 @@ void SessionComponent::freqBandSelected (int band)
         listeners.call (&Listener::sessionComplete, logic.release());
     }
 }
+
+void SessionComponent::quit()
+{
+    listeners.call (&Listener::goHome);
+}

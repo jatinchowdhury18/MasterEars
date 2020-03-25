@@ -2,9 +2,11 @@
 #define RESULTSCOMPONENT_H_INCLUDED
 
 #include "ResultsList.h"
+#include "../Defs.h"
 
 class ResultsComponent : public Component
 {
+CREATE_LISTENER (Listener, listeners, virtual void goHome() {})
 public:
     ResultsComponent (Logic* logic);
 
@@ -15,9 +17,9 @@ private:
     void saveToFile();
 
     std::unique_ptr<Logic> logic;
-    // TextEditor text;
     ResultsList list;
     TextButton saveButton { "Save to file" };
+    TextButton restartButton { "Try Again" };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ResultsComponent)
 };
