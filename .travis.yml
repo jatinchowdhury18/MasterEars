@@ -10,7 +10,7 @@ if: (type != push) OR (type = push AND branch = master)
 matrix:
   include:
     - os: linux
-      dist: xenial
+      dist: bionic
       addons:
         apt:
           packages:
@@ -70,6 +70,31 @@ after_success:
       cd $TRAVIS_BUILD_DIR
       git add Bin
       git commit -m "Travis Mac build - $TRAVIS_BUILD_NUMBER"
+
+      echo "Pushing to branch..."
+      git push https://${GH_TOKEN}@github.com/jatinchowdhury18/MasterEars.git -f
+    fi
+
+  - |
+    if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
+      cd $TRAVIS_BUILD_DIR
+
+      echo "Setting up Git..."
+      git config --global user.email "travis@travis-ci.org"
+      git config --global user.name "Travis CI"
+      git checkout -b Linux
+
+      echo "Copying and zipping files..."
+      cp -R $TRAVIS_BUILD_DIR/build/MasterEars $TRAVIS_BUILD_DIR/Bin/
+      cd $TRAVIS_BUILD_DIR/Bin/
+      rm MasterEars_Linux.zip
+      zip -r MasterEars_Linux.zip MasterEars
+      rm -R MasterEars
+
+      echo "Committing files..."
+      cd $TRAVIS_BUILD_DIR
+      git add Bin
+      git commit -m "Travis Linux build - $TRAVIS_BUILD_NUMBER"
 
       echo "Pushing to branch..."
       git push https://${GH_TOKEN}@github.com/jatinchowdhury18/MasterEars.git -f
