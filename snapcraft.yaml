@@ -1,0 +1,50 @@
+name: masterears
+version: "git"
+summary: Listening test app
+description: |
+  MasterEars is an ear training app for mixing and
+  mastering engineers.
+
+confinement: devmode
+base: core18
+
+parts:
+  masterears:
+    plugin: cmake
+    source: .
+    build-packages:
+    - libasound2-dev
+    - libxcursor-dev
+    - libxinerama-dev
+    - libxrandr-dev
+    - libwebkit2gtk-4.0-dev
+    - libcurl-dev
+    stage-packages:
+    - libasound2
+    - libx11-6
+    - libxext6
+    - libfreetype6
+    - libwebkit2gtk-4.0-37
+    - libcurl4-openssl-dev
+    override-pull: |
+      snapcraftctl pull
+
+      if [ ! -d ../JUCE ]; then git clone --branch=5.4.7 --depth=1 --single-branch -- https://github.com/jatinchowdhury18/JUCE.git ../JUCE; fi
+      if [ ! -d ../FRUT ]; then git clone https://github.com/McMartin/FRUT.git ../FRUT; fi
+
+      cd ../FRUT/
+      if [ ! -d build ]; then mkdir build; fi && cd build/
+      cmake .. -DCMAKE_INSTALL_PREFIX=../prefix -DJUCE_ROOT=/root/parts/masterears/JUCE
+      cmake --build . --target install
+    override-build: |
+      cd /root/parts/masterears/src/
+      cmake . -DCMAKE_INSTALL_PREFIX=
+      cmake --build . -- -j2
+      cmake --build . --config Release
+    override-prime: |
+      snapcraftctl prime
+      cp /root/parts/masterears/src/MasterEars /root/prime
+
+apps:
+  masterears:
+    command: MasterEars    

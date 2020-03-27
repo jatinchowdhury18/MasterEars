@@ -36,103 +36,103 @@ jucer_project_settings(
 jucer_project_files("MasterEars/Source"
 # Compile   Xcode     Binary    File
 #           Resource  Resource
-  x         .         .         "Source/main.cpp"
-  .         .         .         "Source/MainComponent.h"
-  x         .         .         "Source/MainComponent.cpp"
-  .         .         .         "Source/SetupComponent.h"
-  x         .         .         "Source/SetupComponent.cpp"
-  .         .         .         "Source/DataManager.h"
-  x         .         .         "Source/DataManager.cpp"
-  .         .         .         "Source/MyLNF.h"
-  x         .         .         "Source/MyLNF.cpp"
-  .         .         .         "Source/SessionGUI/SessionComponent.h"
-  x         .         .         "Source/SessionGUI/SessionComponent.cpp"
-  .         .         .         "Source/SessionGUI/WaveformViewer.h"
-  x         .         .         "Source/SessionGUI/WaveformViewer.cpp"
-  .         .         .         "Source/SessionGUI/FreqButtons.h"
-  x         .         .         "Source/SessionGUI/FreqButtons.cpp"
-  .         .         .         "Source/SessionGUI/Player.h"
-  x         .         .         "Source/SessionGUI/Player.cpp"
-  .         .         .         "Source/SessionGUI/ThumbnailLoadingWindow.h"
-  .         .         .         "Source/ResultsGUI/ResultsComponent.h"
-  x         .         .         "Source/ResultsGUI/ResultsComponent.cpp"
-  .         .         .         "Source/ResultsGUI/ResultsList.h"
-  x         .         .         "Source/ResultsGUI/ResultsList.cpp"
-  .         .         .         "Source/Backend/Configuration.h"
-  x         .         .         "Source/Backend/Configuration.cpp"
-  .         .         .         "Source/Backend/Logic.h"
-  x         .         .         "Source/Backend/Logic.cpp"
-  .         .         .         "Source/Backend/Filter.h"
-  x         .         .         "Source/Backend/Filter.cpp"
+  x         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/main.cpp"
+  .         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/MainComponent.h"
+  x         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/MainComponent.cpp"
+  .         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/SetupComponent.h"
+  x         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/SetupComponent.cpp"
+  .         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/DataManager.h"
+  x         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/DataManager.cpp"
+  .         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/MyLNF.h"
+  x         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/MyLNF.cpp"
+  .         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/SessionGUI/SessionComponent.h"
+  x         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/SessionGUI/SessionComponent.cpp"
+  .         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/SessionGUI/WaveformViewer.h"
+  x         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/SessionGUI/WaveformViewer.cpp"
+  .         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/SessionGUI/FreqButtons.h"
+  x         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/SessionGUI/FreqButtons.cpp"
+  .         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/SessionGUI/Player.h"
+  x         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/SessionGUI/Player.cpp"
+  .         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/SessionGUI/ThumbnailLoadingWindow.h"
+  .         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/ResultsGUI/ResultsComponent.h"
+  x         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/ResultsGUI/ResultsComponent.cpp"
+  .         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/ResultsGUI/ResultsList.h"
+  x         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/ResultsGUI/ResultsList.cpp"
+  .         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/Backend/Configuration.h"
+  x         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/Backend/Configuration.cpp"
+  .         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/Backend/Logic.h"
+  x         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/Backend/Logic.cpp"
+  .         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/Backend/Filter.h"
+  x         .         .         "${CMAKE_CURRENT_LIST_DIR}/Source/Backend/Filter.cpp"
 )
 
 jucer_project_files("MasterEars/Resources"
 # Compile   Xcode     Binary    File
 #           Resource  Resource
-  .         .         x         "Resources/NunitoSans-Regular.ttf"
-  .         .         x         "Resources/NunitoSans-Bold.ttf"
-  .         .         x         "Resources/cog-solid.svg"
-  .         .         x         "Resources/MasterEarsIcon.png"
+  .         .         x         "${CMAKE_CURRENT_LIST_DIR}/Resources/NunitoSans-Regular.ttf"
+  .         .         x         "${CMAKE_CURRENT_LIST_DIR}/Resources/NunitoSans-Bold.ttf"
+  .         .         x         "${CMAKE_CURRENT_LIST_DIR}/Resources/cog-solid.svg"
+  .         .         x         "${CMAKE_CURRENT_LIST_DIR}/Resources/MasterEarsIcon.png"
 )
 
 jucer_project_module(
     juce_audio_basics
-    PATH "../JUCE/modules"
+    PATH "${CMAKE_CURRENT_LIST_DIR}/../JUCE/modules"
 )
 
 jucer_project_module(
     juce_audio_devices
-    PATH "../JUCE/modules"
+    PATH "${CMAKE_CURRENT_LIST_DIR}/../JUCE/modules"
 )
 
 jucer_project_module(
     juce_audio_formats
-    PATH "../JUCE/modules"
+    PATH "${CMAKE_CURRENT_LIST_DIR}/../JUCE/modules"
 )
 
 jucer_project_module(
     juce_audio_processors
-    PATH "../JUCE/modules"
+    PATH "${CMAKE_CURRENT_LIST_DIR}/../JUCE/modules"
 )
 
 jucer_project_module(
     juce_audio_utils
-    PATH "../JUCE/modules"
+    PATH "${CMAKE_CURRENT_LIST_DIR}/../JUCE/modules"
 )
 
 jucer_project_module(
     juce_core
-    PATH "../JUCE/modules"
+    PATH "${CMAKE_CURRENT_LIST_DIR}/../JUCE/modules"
 )
 
 jucer_project_module(
     juce_data_structures
-    PATH "../JUCE/modules"
+    PATH "${CMAKE_CURRENT_LIST_DIR}/../JUCE/modules"
 )
 
 jucer_project_module(
     juce_events
-    PATH "../JUCE/modules"
+    PATH "${CMAKE_CURRENT_LIST_DIR}/../JUCE/modules"
 )
 
 jucer_project_module(
     juce_graphics
-    PATH "../JUCE/modules"
+    PATH "${CMAKE_CURRENT_LIST_DIR}/../JUCE/modules"
 )
 
 jucer_project_module(
     juce_gui_basics
-    PATH "../JUCE/modules"
+    PATH "${CMAKE_CURRENT_LIST_DIR}/../JUCE/modules"
 )
 
 jucer_project_module(
     juce_gui_extra
-    PATH "../JUCE/modules"
+    PATH "${CMAKE_CURRENT_LIST_DIR}/../JUCE/modules"
 )
 
 jucer_export_target(
     "Xcode (MacOSX)"
-    ICON_LARGE "Resources/MasterEarsIcon.png"
+    ICON_LARGE "${CMAKE_CURRENT_LIST_DIR}/Resources/MasterEarsIcon.png"
 )
 
 jucer_export_target_configuration(
@@ -151,7 +151,7 @@ jucer_export_target_configuration(
 
 jucer_export_target(
     "Visual Studio 2017"
-    ICON_LARGE "Resources/MasterEarsIcon.png"
+    ICON_LARGE "${CMAKE_CURRENT_LIST_DIR}/Resources/MasterEarsIcon.png"
 )
 
 jucer_export_target_configuration(
@@ -168,7 +168,7 @@ jucer_export_target_configuration(
 
 jucer_export_target(
     "Linux Makefile"
-    ICON_LARGE "Resources/MasterEarsIcon.png"
+    ICON_LARGE "${CMAKE_CURRENT_LIST_DIR}/Resources/MasterEarsIcon.png"
 )
 
 jucer_export_target_configuration(
