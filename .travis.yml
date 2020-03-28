@@ -7,10 +7,6 @@ language: cpp
 # if push: only build for master branch
 if: (type != push) OR (type = push AND branch = master)
 
-stages:
-  - name: deploy
-    if: (os == linux) AND (type = push)
-
 matrix:
   include:
     - os: linux
@@ -82,10 +78,12 @@ after_success:
       git push https://${GH_TOKEN}@github.com/jatinchowdhury18/MasterEars.git -f
     fi
 
+before_deploy:
   - |
     if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
       cd $TRAVIS_BUILD_DIR
-      sudo snapcraft --destructive-mode
+      sudo snap install multipass --classic
+      sudo snapcraft
     fi
 
 deploy:
@@ -93,6 +91,8 @@ deploy:
   snap: masterears*.snap
   channel: edge
   skip_cleanup: true
+  on:
+    condition: $TRAVIS_OS_NAME == 'linux'
 
 env:
   global:
