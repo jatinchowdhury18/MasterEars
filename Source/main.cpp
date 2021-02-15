@@ -16,7 +16,7 @@ public:
         // if (handleInternalCommandLineOperations (commandLine))
         //     return;
 	
-	mainWindow.reset (new MainWindow (getApplicationName(), commandLine));
+	    mainWindow.reset (new MainWindow (getApplicationName(), commandLine));
     }
 
     void shutdown() override
@@ -41,9 +41,12 @@ public:
 	        setResizable (true, false);
 	        centreWithSize (getWidth(), getHeight());
 
-            auto screen = Desktop::getInstance().getDisplays().getMainDisplay().userArea;
-            setResizeLimits (getWidth() / 2, getHeight() - 150,
-                screen.getWidth(), screen.getHeight());
+            if (auto* screen = Desktop::getInstance().getDisplays().getPrimaryDisplay())
+            {
+                auto screenArea = screen->userArea;
+                setResizeLimits (getWidth() / 2, getHeight() - 150,
+                    screenArea.getWidth(), screenArea.getHeight());
+            }
 
             setVisible (true);
         }
